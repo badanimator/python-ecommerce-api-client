@@ -6,6 +6,7 @@ import orderService from "../../api/services/order.service";
 import { useUser } from "../../context/UserContext";
 import Page from "../../layout/Page";
 import CardProfile from "../../components/CardProfile";
+import OrderCard from "../../components/OrderCard";
 
 const Orders = () => {
   const [page, setPage] = useState(1);
@@ -25,23 +26,6 @@ const Orders = () => {
     }
   })
 
-  const navigate = useNavigate();
-
-  const handlePage = (num) => {
-    setCurrentPage(num);
-  };
-
-  const goToDetails = (order) => {
-    navigate(`/orders/${order.order_id}`, { state: { order } });
-  };
-
-  // if(isLoading){
-  //   return <Spinner />
-  // }else if (isSuccess && data.meta.total < 1) {
-  //   return <EmptyOrders />
-  // }
-  // else if(isSuccess){
-  // }
   return (
     <Page>
       <div className="max-w-6xl mx-auto pt-20 px-5 grid grid-cols-1 md:grid-cols-4">
@@ -64,39 +48,3 @@ const Orders = () => {
 };
 
 export default Orders;
-
-// <>
-//   <h1 className="my-10 text-center text-4xl font-semibold">Orders</h1>
-//   <TableContainer>
-//     <Table>
-//       <TableHeader>
-//         <TableRow>
-//           <TableCell>ID</TableCell>
-//           <TableCell>No. of items</TableCell>
-//           <TableCell>Status</TableCell>
-//           <TableCell>Amount</TableCell>
-//           <TableCell>Date</TableCell>
-//         </TableRow>
-//       </TableHeader>
-//       <TableBody>
-//         {orders?.items?.data.map((order) => (
-//           <TableRow
-//             className="cursor-pointer"
-//             onClick={() => goToDetails(order)}
-//             key={order.order_id}
-//           >
-//             <OrderItem order={order} />
-//           </TableRow>
-//         ))}
-//       </TableBody>
-//     </Table>
-//     <TableFooter>
-//       <Pagination
-//         totalResults={data.data.meta.total}
-//         resultsPerPage={data.data.meta.per_page}
-//         onChange={handlePage}
-//         label="Table navigation"
-//       />
-//     </TableFooter>
-//   </TableContainer>
-// </>

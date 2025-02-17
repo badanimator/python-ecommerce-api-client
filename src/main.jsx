@@ -1,8 +1,8 @@
 import { CartProvider } from "./context/CartContext";
 import { OrderProvider } from "./context/OrderContext";
 import { ProductProvider } from "./context/ProductContext";
-import { ReviewProvider } from "./context/ReviewContext";
 import { UserProvider } from "./context/UserContext";
+import { WishlistProvider } from "./context/WishlistContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -16,13 +16,13 @@ createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <UserProvider>
         <ProductProvider>
-          <ReviewProvider>
+          <WishlistProvider>
             <CartProvider>
               <OrderProvider>
                 <App />
               </OrderProvider>
             </CartProvider>
-          </ReviewProvider>
+          </WishlistProvider>
         </ProductProvider>
       </UserProvider>
     </QueryClientProvider>

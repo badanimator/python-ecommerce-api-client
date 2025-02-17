@@ -1,18 +1,16 @@
 
 import { useState } from "react";
-import { ClipLoader } from "react-spinners";
-import { ShoppingCart } from "react-feather";
 import toast from "react-hot-toast";
-import { useCart } from "../context/CartContext";
+import { Loader, Lock, ShoppingBag } from "react-feather";
+import { motion } from "framer-motion";
 
+import { useCart } from "../context/CartContext";
 
 const AddToCartBtn = ({ product_id }) => {
   const { isInCart, addItem, cartData } = useCart();
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddToCart = async (e)=>{
-    e.preventDefault();
-    setIsAdding(true)
+  const handleAddToCart = async (product_id)=>{
     try{
       const res = await addItem(product_id, 1);
       return res.data;
@@ -27,27 +25,58 @@ const AddToCartBtn = ({ product_id }) => {
 
   if (isInCart(product_id)){
     return (
-      <Button disabled={isInCart(product_id)} className="border-0 focus:outline-none rounded">
-        <ShoppingCart className="mr-2" />
-        Added to Cart
-      </Button>
+      <button
+        disabled={isInCart(product_id)}
+        className="w-4/5 md:w-3/5 bg-gray-500 overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100"
+      >
+        <motion.span
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          className="flex justify-center place-items-center overflow-hidden"
+        >
+          Added to basket
+          <span>
+            <Lock className="ml-2 w-5 h-5" />
+          </span>
+        </motion.span>
+      </button>
     )  
   }else if(isAdding){
     return (
-      <Button iconLeft={ClipLoader} className="border-0 focus:outline-none rounded">
-        Lodding...
-        {/* <ClipLoader cssOverride={{margin: "0 auto", }} color="#123abc" size={20}/> */}
-      </Button>
+      <button
+        disabled={isAdding}
+        className="w-4/5 md:w-3/5 bg-black overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100"
+      >
+        <motion.span
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          className="flex justify-center place-items-center overflow-hidden"
+        >
+          Adding...
+          <span>
+            <Loader className="ml-2 w-5 h-5" />
+          </span>
+        </motion.span>
+      </button>
     )
   }else{
     return (
-      <Button
-        className="border-0 focus:outline-none rounded"
-        onClick={(e) => handleAddToCart(e)}
+      <button
+        onClick={() => handleAddToCart(product_id)}
+        disabled={isInCart(product_id)}
+        className="w-4/5 md:w-3/5 bg-black overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100"
       >
-        <ShoppingCart className="mr-2" />
-        Add to Cart
-      </Button>    
+        <motion.span
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          className="flex justify-center place-items-center overflow-hidden"
+        >
+          Add to basket
+          <span>
+            <ShoppingBag className="ml-2 w-5 h-5" />
+          </span>
+        </motion.span>
+      </button>
     )
   }
 };

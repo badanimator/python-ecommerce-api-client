@@ -50,10 +50,6 @@ class AuthService {
   getCurrentUser() {
     return API.get("/account/user");
   }
-
-  getUsers(page) {
-    return API.get(`/user/all/?page=${page}`);
-  }
 }
 
 export default new AuthService();

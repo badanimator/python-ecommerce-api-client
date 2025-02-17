@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sliders, Grid, Columns, Filter } from "react-feather";
+import { Sliders, Grid, Columns, Filter, ChevronDown } from "react-feather";
 
 import ShopCarousel from "../components/shopcarousel";
 import SideCategory from "../components/sidecategory";
@@ -7,21 +7,21 @@ import { useProduct } from "../context/ProductContext";
 import Header from "../components/Header";
 import Nav from "../components/Nav";
 
-const Shop = ({children, title, loading, types, categories }) => {
-  const {setOrderby, orderby} = useProduct()
+const Shop = ({children, title }) => {
+  const {setOrderby, orderby} = useProduct();
+  const [sortOpen, setSortOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [grid, setGrid] = useState(4);
-  const [sortOpen, setSortOpen] = useState(false);
   return (
     <>
       <Header title={title} />
-      <div className="w-full min-h-screen bg-gray-200 pb-10">
+      <div className="w-full min-h-screen bg-gray-100 pb-10">
         <Nav />
         <button
           onClick={() => setOpen(!open)}
-          className="w-12 h-12 rounded-full bg-white fixed z-30 drop-shadow-2xl lg:hidden flex justify-center place-items-center bottom-0 left-0 m-5"
+          className="w-12 h-12 rounded-full bg-black fixed z-30 drop-shadow-2xl lg:hidden flex justify-center place-items-center bottom-0 left-0 m-5"
         >
-          <Sliders className="w-6 text-black h-6" />
+          <Sliders className="w-6 h-6" color="white" />
         </button>
         <div className="max-w-6xl mx-auto pt-14 md:px-0">
           <div className="grid grid-cols-4 gap-x-6">
@@ -29,9 +29,9 @@ const Shop = ({children, title, loading, types, categories }) => {
               onClick={() => setOpen(!open)}
               className={`${
                 open ? `fixed` : `hidden`
-              } lg:static lg:inline lg:bg-gray-200 h-screen bg-opacity-30 z-20 flex w-full justify-center place-items-center top-0 lg:p-4`}
+              } lg:static lg:inline h-screen bg-opacity-30 z-20 flex w-full justify-center place-items-center top-0 lg:p-4`}
             >
-              <SideCategory typesData={types} />
+              <SideCategory />
             </div>
             <div className="col-span-4 md:col-span-4 lg:col-span-3 flex flex-col py-4 mx-2 md:mx-0">
               <ShopCarousel />
@@ -68,26 +68,11 @@ const Shop = ({children, title, loading, types, categories }) => {
                     >
                       <Filter className="w-5 h-5 mr-1" />
                       Sort
-                      <svg
-                        className="w-4 h-4 ml-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                      <ChevronDown className="w-4 h-4 ml-1" />
                     </button>
 
                     <div
-                      className={`${
-                        sortOpen ? "absolute" : "hidden"
-                      } top-7 shadow-lg rounded-md text-sm right-0 bg-white text-gray-500 z-20 px-2 py-2`}
+                      className={`${sortOpen ? "absolute" : "hidden"} top-7 shadow-lg rounded-md text-sm right-0 bg-white text-gray-500 z-20 px-2 py-2`}
                     >
                       <ul>
                         <li className="py-1 px-2 rounded-sm hover:bg-gray-100 active:bg-gray-200">

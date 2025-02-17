@@ -3,7 +3,8 @@ import {
     Cart, 
     Checkout, 
     ProductDetails, 
-    Orders
+    Orders, 
+    Wishlist,
 } from "../pages";
 import { ProtectedRoute,  } from "./ProtectedRoutes";
 
@@ -14,6 +15,7 @@ const mainRoutes = {
         {path: '', element: <ProductList />},
         {path: '/cart', element: <Cart />},
         {path: '/products/:slug/', element: <ProductDetails />},
+        {path: '/wishlist', element: <Wishlist />},
         {path: '/checkout', element: <ProtectedRoute children={<Checkout />} />},
         {path: '/orders', element: <ProtectedRoute children={<Orders />} />},
     ]

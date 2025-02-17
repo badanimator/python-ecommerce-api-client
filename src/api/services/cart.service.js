@@ -8,12 +8,13 @@ class CartService {
     return API.get("/cart/guest/");
   }
 
-  async addToUserCart(product_id, quantity) {
-    return await API.post("/cart/user/", { product_id, quantity });
+  async addToUserCart(product_id, quantity, variation) {
+    return await API.post("/cart/user/", { product_id, quantity, variation });
   }
   
-  async addToGuestCart(product_id, quantity) {
-    return await API.post("/cart/guest", { product_id, quantity });
+  async addToGuestCart(product_id, quantity, variation) {
+    console.log(variation)
+    return await API.post("/cart/guest", { product_id, quantity, variation });
   }
 
   async removeFromUserCart(product_id) {

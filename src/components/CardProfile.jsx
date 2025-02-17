@@ -1,4 +1,9 @@
+import { useUser } from "../context/UserContext";
+
+
 function CardProfile({ username, orders }) {
+  const { userData } = useUser();
+
   return (
     <div className="rounded-2xl p-5 bg-white shadow-lg">
       <div className="flex flex-col place-items-center pb-3 border-b border-gray-300">

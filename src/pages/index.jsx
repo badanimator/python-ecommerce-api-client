@@ -7,4 +7,5 @@ export { default as ProductDetails } from "./mainsite/ProductDetails";
 export { default as ProductList } from "./mainsite/ProductList";
 export { default as Register } from "./auth/Register";
 export { default as ResetPassword } from "./auth/ResetPassword";
+export { default as Wishlist } from "./mainsite/Wishlist";
 
