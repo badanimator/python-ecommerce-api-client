@@ -1,18 +1,20 @@
 import API from "../../api/axios.config";
+import axios from "axios";
 
 class OrderService {
-  createOrder(email, phone_number, payment_method) {
-    return API.post("/payment/create", {
-      email,
-      phone_number,
-      payment_method,
+  guestCheckout(phone_number, payment_channel, email, address, city, region){
+    return API.post("/checkout/guest", {
+      phone_number, 
+      payment_channel, 
+      email, 
+      address, 
+      city, 
+      region
     });
   }
-  getAllOrders(page) {
-    return API.get(`/orders/user?page=${page}`);
-  }
-  getOrder(id) {
-    return API.get(`/orders/${id}`);
+
+  userCheckout(phone_number, payment_channel, email, address, city, region){
+    return API.post("/checkout/user", {phone_number, payment_channel, email, address, city, region});
   }
 }
 

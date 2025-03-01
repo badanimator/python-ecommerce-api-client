@@ -16,7 +16,7 @@ const mainRoutes = {
         {path: '/cart', element: <Cart />},
         {path: '/products/:slug/', element: <ProductDetails />},
         {path: '/wishlist', element: <Wishlist />},
-        {path: '/checkout', element: <ProtectedRoute children={<Checkout />} />},
+        {path: '/checkout', element: <Checkout />},
         {path: '/orders', element: <ProtectedRoute children={<Orders />} />},
     ]
 }

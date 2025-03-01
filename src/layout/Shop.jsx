@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Sliders, Grid, Columns, Filter, ChevronDown } from "react-feather";
 
-import ShopCarousel from "../components/shopcarousel";
-import SideCategory from "../components/sidecategory";
+import ShopCarousel from "../components/ShopCarousel";
+import SideCategory from "../components/SideCategory";
+import TopCategory from "../components/TopCategory";
 import { useProduct } from "../context/ProductContext";
 import Header from "../components/Header";
 import Nav from "../components/Nav";
@@ -24,6 +25,7 @@ const Shop = ({children, title }) => {
           <Sliders className="w-6 h-6" color="white" />
         </button>
         <div className="max-w-6xl mx-auto pt-14 md:px-0">
+          {/* <TopCategory categories={[]} /> */}
           <div className="grid grid-cols-4 gap-x-6">
             <div
               onClick={() => setOpen(!open)}

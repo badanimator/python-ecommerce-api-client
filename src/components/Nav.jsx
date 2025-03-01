@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useUser } from "../context/UserContext";
 import { useWishlist } from "../context/WishlistContext";
-import MenuNav from "./menunav";
-import Search from "./search";
+import MenuNav from "./MenuNav";
 
 const Nav = () => {
   const { cartData } = useCart();
@@ -23,25 +22,23 @@ const Nav = () => {
     <nav className="w-full mx-auto fixed bg-gray-100 z-30 py-2 md:px-0 duration-200">
       <div className="px-2 navtop relative max-w-6xl mx-auto flex justify-between place-items-center py-1.5">
         <div className="burger flex items-center">
-          <button onClick={handleOpen}>
+          {/* <button onClick={handleOpen}>
             <Menu className="w-6 m-auto h-6 text-black" />
-          </button>
-          <h3 className="hidden md:inline text-md mr-2 font-semibold ml-3 text-black">
-            TwiGuy
-          </h3>
+          </button> */}
+          <Link to={"/"}>
+            <img className="mr-2 ml-3" src="logo.png" width={35} alt="" />
+          </Link>
         </div>
         <div className="profile flex items-center place-items-center">
-          <Search />
-
           <Link
-            to="/cart"
+            to="/cart" 
             className="w-8 relative flex items-center h-8 mr-1 rounded-full hover:bg-gray-200 active:bg-gray-300 cursor-pointer duration-200"
           >
             <ShoppingBag className="w-6 m-auto h-6 text-black" />
             <div
               className={` absolute text-xs font-light justify-center text-white text-center w-4 h-4 bg-black rounded-full bottom-0 right-0`}
             >
-              {(cartData.isSuccess)?cartData.data.quantity:0}
+              {(cartData.isSuccess)?cartData.data.cart_quantity:0}
             </div>
           </Link>
           <Link to={"/wishlist"}>

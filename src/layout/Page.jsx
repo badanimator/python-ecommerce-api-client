@@ -10,7 +10,7 @@ const Page = ({children, title, loading, types, categories }) => {
   return (
     <>
       <Header title={title} />
-      <div className="w-full min-h-screen bg-gray-200 pb-10">
+      <div className="w-full min-h-screen bg-gray-100 pb-10">
         <Nav />
         <div className="max-w-6xl mx-auto pt-14 md:px-0">
           {children}

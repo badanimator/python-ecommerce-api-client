@@ -38,13 +38,14 @@ function BasketProduct({ item }) {
         <span className="font-semibold text-black text-righ">{item.product.currency} {item.product.price}</span>
         <div className="flex ml-auto text-black mt-1 md:mt-0">
           <button
-            disabled={item.quantity >= item.product.quantity}
+            // disabled={item.quantity >= item.product.quantity}
             onClick={() => increment(item.product.id).then(() => cartData.refetch())}
             className="border border-black active:bg-gray-800 rounded-sm p-1 hover:bg-black hover:text-white duration-100"
           >
-            {
+            <Plus className="w-4 h-4" />
+            {/* {
               (item.quantity >= item.product.quantity)? <Lock className="w-4 h-4" />:<Plus className="w-4 h-4" />
-            }
+            } */}
             
           </button>
           <button

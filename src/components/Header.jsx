@@ -5,7 +5,7 @@ const Header = ({title})=>{
     return (
         <>
         <meta charSet="utf-8" />
-        <title>{title ?? "Home"} | TwiGuy </title>
+        <title>{title ?? "Home"} | Lokis </title>
         <meta
           name="description"
           content="E-commerce store built with React, Node, Express and Postgres"
@@ -35,7 +35,6 @@ const Header = ({title})=>{
         />
         <meta name="twitter:title" content="PERN Store" />
         <meta name="twitter:image" content="android-chrome-512x512.png" />
-        <style type="text/css">{`html,body{height: 100%;}`}</style>
         </>
     )
 }

@@ -29,11 +29,11 @@ const CartProvider = ({ children }) => {
     }
   }
   
-  const addItem = (product_id, quantity) => {
+  const addItem = (product_id, quantity, variation_id) => {
     if (isLoggedIn) {
-      return cartService.addToUserCart(product_id, quantity);
+      return cartService.addToUserCart(product_id, quantity, variation_id);
     } else {
-      return cartService.addToGuestCart(product_id, quantity);
+      return cartService.addToGuestCart(product_id, quantity, variation_id);
     }
   };
 

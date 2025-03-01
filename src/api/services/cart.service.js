@@ -2,29 +2,28 @@ import API from "../../api/axios.config";
 
 class CartService {
   getUserCart() {
-    return API.get("/cart/user/");
+    return API.get("/cart/user");
   }
   getGuestCart() {
-    return API.get("/cart/guest/");
+    return API.get("/cart/guest");
   }
 
-  async addToUserCart(product_id, quantity, variation) {
-    return await API.post("/cart/user/", { product_id, quantity, variation });
+  async addToUserCart(product_id, quantity, variation_id) {
+    return await API.post("/cart/user", { product_id, quantity, variation_id });
   }
   
-  async addToGuestCart(product_id, quantity, variation) {
-    console.log(variation)
-    return await API.post("/cart/guest", { product_id, quantity, variation });
+  async addToGuestCart(product_id, quantity, variation_id) {
+    return await API.post("/cart/guest", { product_id, quantity, variation_id });
   }
 
   async removeFromUserCart(product_id) {
-    return await API.delete("/cart/user/", {
+    return await API.delete("/cart/user", {
       data: { product_id: Number(product_id) },
     });
   }
   
   async removeFromGuestCart(product_id) {
-    return await API.delete("/cart/guest/", {
+    return await API.delete("/cart/guest", {
       data: { product_id: Number(product_id) },
     });
   }

@@ -1,100 +1,64 @@
-import { useState, useRef, useCallback } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { Sliders, X } from "react-feather";
+import { useState } from "react";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { useProduct } from "../../context/ProductContext";
 import productService from "../../api/services/product.service";
-import CardSkeleton from "../../components/CardSkeleton";
-import Shop from "../../layout/Shop";
 import Product from "../../components/Product";
+import Nav from "../../components/Nav";
+import MainLayout from "../../layout/MainLayout";
+import SideCategory from "../../components/SideCategory";
+import ShopCarousel from "../../components/ShopCarousel";
+import ProductsCard from "../../components/ProductsCard";
+
 
 const ProductList = () => {
-  const {searchStr, categoryId, orderby} = useProduct();
-  // const [searchStr, setSearchStr] = useState("")
-  // const [categoryId, setCategoryId] = useState(undefined);
-  // const [orderby, setOrderby] = useState("")
+  const { filters } = useProduct();
+  const [open, setOpen] = useState(false);
 
   const productData = useInfiniteQuery({
     refetchOnWindowFocus:false,
-    queryKey: ['products', searchStr, categoryId, orderby],
-    queryFn: async ({ pageParam = 1 }) => {
+    queryKey: ['products', filters],
+    getNextPageParam: ({ meta }) => (meta.pages === meta.page)? undefined: meta.next_num,
+    queryFn: async ({pageParam = 1}) => {
       try{
-        const res = await productService.getUserProduct(
-          pageParam, 
-          searchStr, 
-          categoryId,
-          orderby
-        );
+        const res = await productService.getUserProduct(pageParam, {
+          ...filters
+        });
         return res.data;
       }catch(error){
         return
       }
-    }, 
-    getNextPageParam: (lastPage) => {
-      return (lastPage.meta.page < lastPage.meta.pages)? lastPage.meta.page + 1:undefined
-    }
+    },
   })
   
-  const observerRef = useRef();
-    const lastProductRef = useCallback((node)=>{
-      if (productData.isFetchingNextPage) return
-      if (observerRef.current) observerRef.current.disconnect();
-  
-      observerRef.current = new IntersectionObserver((entries)=>{
-        if (entries[0].isIntersecting && productData.hasNextPage){
-          productData.fetchNextPage()
-        }
-      })
-  
-      if (node) observerRef.current.observe(node);
-    }, [productData.hasNextPage, productData.fetchNextPage, productData.isFetchingNextPage])
-
-
   return (
-    <Shop title={"Shop"}>
-      {
-        productData.isSuccess && (
-          productData.data.pages[0].meta.total == 0 ? (
-            <p className="col-span-full mx-auto text-sm text-gray-400">
-              No item found
-            </p>
-          ) : (
-            productData.data.pages.map((page, pageIndex) => page.items.map((item, index)=>{
-              const isLastProduct = pageIndex === productData.data.pages.length - 1 && index === page.items.length - 1;
-              
-              return (
-                <Product key={index} item={item} ref={isLastProduct ? lastProductRef : null} />
-              )
-            }
-            ))
-          ))
-      }
-      {
-        productData.isLoading && (
-          <>
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-            <CardSkeleton />
-          </>
-        )
-      }
-      
-      {productData.isFetchingNextPage && (
-      <>
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-      </>
-      )}
-    </Shop>
+    <MainLayout title={"Home page"}>
+      <Nav />
+      {/* toggle category */}
+      <button onClick={() => setOpen(!open)} className="w-12 h-12 rounded-full bg-black fixed z-30 drop-shadow-2xl lg:hidden flex justify-center place-items-center bottom-0 left-0 m-5">
+        {open? <X className="w-8 h-8" color="white"  />:<Sliders className="w-5 h-5" color="white" />}
+      </button>
+      {/* toggle category */}
+
+      <div className="max-w-6xl mx-auto pt-14 md:px-0">
+        <div className="grid grid-cols-4 gap-x-6">
+          <div className={`${open ? `fixed` : `hidden`} lg:static lg:inline h-screen bg-opacity-30 z-20 flex w-full justify-center place-items-center top-0 lg:p-4`}>
+            <SideCategory />
+          </div>
+          <div className="col-span-4 md:col-span-4 lg:col-span-3 flex flex-col p-2 mx-2 md:mx-0">
+            <ShopCarousel />
+            <ProductsCard isLoading={productData.isFetching}>    
+              {productData.isSuccess && (
+                productData.data.pages.map((page)=>page.items.map((item, index)=> <Product key={index} item={item}/>))
+              )}
+              {productData.hasNextPage && (
+                <button onClick={()=>productData.fetchNextPage()} className="col-span-full rounded-lg border border-gray-500 bg-white text-gray-500 hover:text-gray-500 h-10 " type="button">See more</button>
+              )}
+            </ProductsCard>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
   )
 };
 
