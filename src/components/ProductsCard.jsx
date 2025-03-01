@@ -5,7 +5,7 @@ import CardSkeleton from "./CardSkeleton";
 
 
 
-const ProductsCard = ({children, dataNotFound, isLoading})=>{
+const ProductsCard = ({children, isLoading})=>{
   const [grid, setGrid] = useState(4);
   const [sortOpen, setSortOpen] = useState(false);
   const {setOrderby, orderby} = useProduct();
@@ -54,7 +54,6 @@ const ProductsCard = ({children, dataNotFound, isLoading})=>{
             <CardSkeleton />
           </>
         )}
-        {dataNotFound && <p className="col-span-full mx-auto text-sm text-gray-400 h-96">No item found</p>}
       </div>
     </div>
   )

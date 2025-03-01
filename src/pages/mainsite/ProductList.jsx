@@ -1,6 +1,6 @@
 import { Sliders, X } from "react-feather";
-import { useState } from "react";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useProduct } from "../../context/ProductContext";
 import productService from "../../api/services/product.service";
 import Product from "../../components/Product";
@@ -9,11 +9,27 @@ import MainLayout from "../../layout/MainLayout";
 import SideCategory from "../../components/SideCategory";
 import ShopCarousel from "../../components/ShopCarousel";
 import ProductsCard from "../../components/ProductsCard";
+import Lottie from "lottie-web";
+import NotFound from '../../../public/notfound.json'; // Replace 'your
+import { useRef } from "react";
 
 
 const ProductList = () => {
   const { filters } = useProduct();
   const [open, setOpen] = useState(false);
+  const animationContainer = useRef(null);
+
+  useEffect(() => {
+    const anim = Lottie.loadAnimation({
+      container: animationContainer.current,
+      renderer: 'svg', // Change the renderer type if needed (canvas, html)
+      loop: true,
+      autoplay: true,
+      animationData: NotFound  // Your own JSON animation data
+    });
+
+    return () => anim.destroy();// Clean up when component unmounts;
+  }, []);
 
   const productData = useInfiniteQuery({
     refetchOnWindowFocus:false,
@@ -47,10 +63,14 @@ const ProductList = () => {
           </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-3 flex flex-col p-2 mx-2 md:mx-0">
             <ShopCarousel />
-            <ProductsCard isLoading={productData.isFetching}>    
-              {productData.isSuccess && (
+            <ProductsCard isLoading={productData.isFetching}>
+              {/* no data */}
+              <div className={`${!(productData.isSuccess && productData.data.pages[0].meta.total === 0) && "hidden"} col-span-full h-80`} ref={animationContainer}></div>
+              {/* data */}
+              {(productData.isSuccess && productData.data.pages.length > 0) && (
                 productData.data.pages.map((page)=>page.items.map((item, index)=> <Product key={index} item={item}/>))
               )}
+              {/* paginataion */}
               {productData.hasNextPage && (
                 <button onClick={()=>productData.fetchNextPage()} className="col-span-full rounded-lg border border-gray-500 bg-white text-gray-500 hover:text-gray-500 h-10 " type="button">See more</button>
               )}
