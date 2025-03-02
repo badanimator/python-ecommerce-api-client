@@ -101,7 +101,7 @@ const Nav = () => {
                   </div>
                 )}
                 {!isLoggedIn && (
-                  <Link to="/auth/login">
+                  <Link to="/login">
                     <div className="hover:underline flex place-items-center">
                       <LogIn className="w-6 h-6 text-black" />
                       <span>

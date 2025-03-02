@@ -7,6 +7,8 @@ import { useCart } from "../context/CartContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+const PAYSTACK_BEARER_TOKEN = import.meta.env.PROD? import.meta.env.PAYSTACK_BEARER_TOKEN : "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
+
 const logos = {
   mtn:"c:\Users\LATITUDE\AppData\Local\Temp\New-mtn-logo-768x768-4066736583.jpg", 
   telecel:"c:\Users\LATITUDE\AppData\Local\Temp\Telecel-Cash-Logo-750x375-3544233114.jpg", 
@@ -50,7 +52,7 @@ function PaymentForm({ next, prev }) {
         "https://api.paystack.co/transaction/verify/" + statusData.reference, 
         {
           headers:{
-            Authorization:"Bearer sk_live_3bdc110e868870361db9d20d82c1807c4234fa9e"
+            Authorization:"Bearer " + PAYSTACK_BEARER_TOKEN
           }
         }
       ).then((data)=> {
