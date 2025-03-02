@@ -3,9 +3,11 @@ import { useEffect } from "react";
 import { CheckCircle, X } from "react-feather";
 import { Link } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
+import { useOrders } from "../context/OrderContext";
 
 
-function OrderConfirmation({isSuccess, failed}) {
+function OrderConfirmation() {
+  const { failed, isSuccess} = useOrders();
   useEffect(() => {
     // dispatch(deleteFromBasket());
   }, []);

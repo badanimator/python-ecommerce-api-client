@@ -1,17 +1,24 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Plus, Minus, Lock } from "react-feather";
+import { Plus, Minus, Lock, Trash } from "react-feather";
 import { useCart } from "../context/CartContext";
+import { useState } from "react";
+import { ClipLoader, SyncLoader, FadeLoader } from "react-spinners";
 
 function BasketProduct({ item }) {
   const { decrement, deleteItem, increment, cartData } = useCart();
+  const [isDecreasing, setIsDecreasing] = useState(false);
+  const [isIncreasing, setIsIncreasing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+
 
   return (
     <div
       className="product md:flex justify-between mb-6"
       suppressHydrationWarning
     >
-      <Link to={"/products/" + item.product.slug}>
+      <Link to={"/details/" + item.product.slug}>
         <div className="image md:flex cursor-pointer">
           <motion.div
             initial={{ scale: 1.5, x: 50, y: -50, opacity: 0 }}
@@ -37,32 +44,47 @@ function BasketProduct({ item }) {
       <div className="flex flex-col justify-between py-1">
         <span className="font-semibold text-black text-righ">{item.product.currency} {item.product.price}</span>
         <div className="flex ml-auto text-black mt-1 md:mt-0">
+          {/* decrement */}
           <button
-            // disabled={item.quantity >= item.product.quantity}
-            onClick={() => increment(item.product.id).then(() => cartData.refetch())}
+            disabled={item.quantity <= 1 || isDecreasing}
+            onClick={() => {
+              setIsDecreasing(true);
+              decrement(item.product.id).then(() => cartData.refetch()).finally(()=> setIsDecreasing(false))
+            }}
             className="border border-black active:bg-gray-800 rounded-sm p-1 hover:bg-black hover:text-white duration-100"
           >
-            <Plus className="w-4 h-4" />
-            {/* {
-              (item.quantity >= item.product.quantity)? <Lock className="w-4 h-4" />:<Plus className="w-4 h-4" />
-            } */}
-            
-          </button>
-          <button
-            disabled={item.quantity <= 1}
-            onClick={() => decrement(item.product.id).then(() => cartData.refetch())}
-            className="border border-black active:bg-gray-800 rounded-sm p-1 hover:bg-black hover:text-white duration-100 mx-1"
-          >
             {
-              (item.quantity <= 1)? <Lock className="w-4 h-4" />:<Minus className="w-4 h-4" />
+              isDecreasing? <SyncLoader className="w-4 h-4" size={1} />: (item.quantity <= 1)? <Lock className="w-4 h-4" />:<Minus className="w-4 h-4" />
             }
             
           </button>
+          {/* increment */}
           <button
-            onClick={() => deleteItem(item.product.id).then(() => cartData.refetch())}
+            disabled={isIncreasing || (item.product.quantity!==null && (item.quantity >= item.product.quantity))}
+            onClick={() => {
+              setIsIncreasing(true);
+              increment(item.product.id).then(() => cartData.refetch()).finally(()=>setIsIncreasing(false))
+              }}
+            className="border border-black active:bg-gray-800 rounded-sm p-1 hover:bg-black hover:text-white duration-100 mx-1"
+          >
+            {isIncreasing? (
+              <SyncLoader className="w-4 h-4" size={1}/>
+              ):
+              (item.product.quantity!==null && (item.quantity >= item.product.quantity))? 
+              <Lock className="w-4 h-4" />: <Plus className="w-4 h-4" />}            
+          </button>
+          {/* deletion */}
+          <button
+            onClick={() => {
+              setIsDeleting(true)
+              deleteItem(item.product.id).then(() => cartData.refetch()).finally(()=>{
+                setIsDeleting(false);
+              })
+            }}
+            disabled={isDeleting}
             className="border border-black active:bg-gray-800 rounded-sm p-1 hover:bg-black hover:text-white duration-100 text-xs px-2 font-medium"
           >
-            REMOVE
+            {isDeleting? <SyncLoader className="w-4 h-4" size={1} />:<Trash className="w-4 h-4" />}
           </button>
         </div>
       </div>

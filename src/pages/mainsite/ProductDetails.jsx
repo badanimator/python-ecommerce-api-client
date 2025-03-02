@@ -8,13 +8,15 @@ import { ShoppingBag, Heart } from "react-feather";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
+import { SyncLoader } from "react-spinners";
 
 import productService from "../../api/services/product.service";
-import Page from "../../layout/Page";
 import Product from "../../components/Product";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 import CardSkeleton from "../../components/CardSkeleton";
+import MainLayout from "../../layout/MainLayout";
+import Nav from "../../components/Nav";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -22,6 +24,8 @@ const ProductDetails = () => {
   const [thumbnail, setThumbnail] = useState(0);
   const { isInCart, addItem, cartData } = useCart();
   const { addWishlistItem, isInWishlist, wishlistData } = useWishlist();
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
 
   // fetch data
   const {data: dataItem, isLoading, isSuccess} = useQuery({
@@ -42,6 +46,7 @@ const ProductDetails = () => {
 
   const onSubmit = async (form_data) => {
     const {variation} =  form_data;
+    setIsAddingToCart(true);
 
     try{
       const res = await addItem(dataItem.id, 1, variation);
@@ -50,8 +55,17 @@ const ProductDetails = () => {
       toast.error("Error adding to cart");
     }finally{
       cartData.refetch();
+      setIsAddingToCart(false);
     }
   };
+
+  const handleAddToWishlist = ()=>{
+    setIsAddingToWishlist(true);
+    addWishlistItem(dataItem.id).finally(()=> {
+      wishlistData.refetch();
+      setIsAddingToWishlist(false);
+    });
+  }
 
   
   const isActiveThumbnail = (currentThumbnailKey, thumbnailKey)=>{
@@ -59,15 +73,18 @@ const ProductDetails = () => {
   }
 
   return (
-    <Page>
+    <MainLayout>
+      <title>Details - Pelotex</title>
+      <Nav />
+
       <div className="flex justify-between place-items-center py-4 px-1 mb-4">
-          <Link to="/">
-            <div className="w-9 h-9 shadow-lg bg-white text-black hover:bg-black hover:text-white duration-200 cursor-pointer rounded-full flex justify-center place-items-center">
-              <ChevronLeft className="w-4 h-4 " />
-            </div>
-          </Link>
-          <h4 className="text-cusblack text-md">Product Details</h4>
-          <div className="w-8"></div>
+        <Link to="/">
+          <div className="w-9 h-9 shadow-lg bg-white text-black hover:bg-black hover:text-white duration-200 cursor-pointer rounded-full flex justify-center place-items-center">
+            <ChevronLeft className="w-4 h-4 " />
+          </div>
+        </Link>
+        <h4 className="text-cusblack text-md">Product Details</h4>
+        <div className="w-8"></div>
       </div>
 
       {isLoading && (<>
@@ -157,7 +174,7 @@ const ProductDetails = () => {
               )}
               <div className="buttoncart flex mt-5 w-full">
                 <button type="submit"
-                  disabled={isInCart(dataItem.id)}
+                  disabled={isInCart(dataItem.id) || isAddingToCart}
                   className={`w-4/5 md:w-3/5 ${isInCart(dataItem.id)?"bg-gray-500":"bg-black"} overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100`}
                 >
                   <motion.span
@@ -166,11 +183,16 @@ const ProductDetails = () => {
                     className="flex justify-center place-items-center overflow-hidden"
                   >
                     {
+                      isAddingToCart || isLoading?(
+                        <span>
+                          <SyncLoader size={10} color="white" />
+                        </span>
+                      ):
                       isInCart(dataItem.id)?(
                         <>
                           Added to basket
                           <span>
-                            <ShoppingBag className="ml-2 w-5 h-5" fill="white" color="black" />
+                            <ShoppingBag className="ml-2 w-5 h-5" />
                           </span>
                         </>
                       ):
@@ -188,15 +210,15 @@ const ProductDetails = () => {
                 </button>
 
                 <button 
-                  disabled={isInWishlist(dataItem.id)}
-                  onClick={()=>{
-                    addWishlistItem(dataItem.id).finally(()=> wishlistData.refetch());
-                  }}
+                  disabled={isInWishlist(dataItem.id) || isAddingToWishlist}
+                  onClick={handleAddToWishlist}
                   type="button"
                   className="w-1/5 ml-2 bg-white border border-cusblack py-4 text-cusblack rounded-lg text-sm"
                 >
                   {
-                    isInWishlist(dataItem.id)? (
+                    isAddingToWishlist || isLoading ? (
+                      <SyncLoader size={8} />
+                    ): isInWishlist(dataItem.id)? (
                       <Heart className="w-5 h-5 m-auto" fill={"black"}/>
                     ):
                     (
@@ -221,7 +243,7 @@ const ProductDetails = () => {
           </div>
         )}
       </>)}
-    </Page>
+    </MainLayout>
   )
 };
 

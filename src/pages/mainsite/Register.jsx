@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import PulseLoader from "react-spinners/PulseLoader";
+import { SyncLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -7,7 +7,8 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useUser } from "../../context/UserContext";
 import API from "../../api/axios.config";
-import Page from "../../layout/Page";
+import MainLayout from "../../layout/MainLayout";
+import Nav from "../../components/Nav";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,19 +61,16 @@ const Register = () => {
     return <Navigate to={state?.from || "/"} />;
   }
   return (
-    <Page>
+    <MainLayout>
+      <Nav />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full min-h-screen relative bg-gray pb-10 flex justify-center place-items-center"
+        className="w-full min-h-screen relative bg-gray pb-10 pt-20 flex justify-center place-items-center"
       >
         {isLoading && (
           <div className="w-full h-screen flex justify-center place-items-center absolute top-0 right-0 bg-white backdrop-blur-sm bg-opacity-20">
-            <img
-              src="https://i.ibb.co/8jP3GyP/Dual-Ball-1-1s-200px.gif"
-              className="w-20"
-              alt=""
-            />
+            <SyncLoader className="w-20" />
           </div>
         )}
 
@@ -81,12 +79,8 @@ const Register = () => {
           className="p-5 max-w-md mx-2 bg-white flex flex-col place-items-center shadow-lg rounded-xl"
         >
           <h1 className="text-center text-xl font-bold text-black leading-6 my-5">
-            BECOME A CUSTOMER
+            NEW CUSTOMER
           </h1>
-          <p className="text-sm font-medium text-gray-400 mb-4 text-center px-6">
-            Create your Shop Customer profile and get first access to the very
-            best of products, inspiration and community.
-          </p>
           {/* {success && (
             <div className="text-xs text-center mb-2 font-light text-green-500">
               Your account has been registered as a member
@@ -226,7 +220,7 @@ const Register = () => {
           </div>
         </form>
       </motion.div>
-    </Page>
+    </MainLayout>
   );
 };
 

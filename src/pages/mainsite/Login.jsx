@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { SyncLoader } from "react-spinners";
 import { Home } from "react-feather";
 // components
 import { useUser } from "../../context/UserContext";
 import authService from "../../api/services/auth.service";
-import Page from "../../layout/Page";
+import MainLayout from "../../layout/MainLayout";
+import Nav from "../../components/Nav";
 
 const Login = () => {
   const { isLoggedIn, setUserState } = useUser();
@@ -51,15 +53,13 @@ const Login = () => {
   if (isLoggedIn) return <Navigate to={state?.from || "/"} />;
 
   return (
-    <Page>
+    <MainLayout>
+      <title>Login - Pelotex</title>
+      <Nav/>
       <div className="w-full min-h-screen relative bg-gray-100 pb-10 flex justify-center place-items-center">
         {isLoading && (
-          <div className="w-full h-screen flex justify-center place-items-center absolute top-0 right-0 bg-white backdrop-blur-sm bg-opacity-20">
-            <img
-              src="https://i.ibb.co/8jP3GyP/Dual-Ball-1-1s-200px.gif"
-              className="w-20"
-              alt=""
-            />
+          <div className="w-full min-h-screen flex justify-center place-items-center absolute top-0 right-0 bottom-0 left-0 bg-white backdrop-blur-sm bg-opacity-20">
+            <SyncLoader className="w-20" />
           </div>
         )}
         <motion.div
@@ -67,13 +67,8 @@ const Login = () => {
           animate={{ opacity: 1 }}
           className="p-5 max-w-md bg-white flex flex-col place-items-center shadow-lg rounded-xl mx-2"
         >
-          <Link to="/">
-            <Home className="w-20 cursor-pointer" />            
-          </Link>
           <h1 className="text-center text-xl font-bold text-black leading-6 my-5">
-            YOUR ACCOUNT FOR
-            <br />
-            EVERYTHING
+            RETURNING CUSTOMER
           </h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             {error && (
@@ -129,7 +124,7 @@ const Login = () => {
           </div>
         </motion.div>
       </div>
-    </Page>
+    </MainLayout>
   );
 };
 

@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import Page from "../../layout/Page";
 import { useUser } from "../../context/UserContext";
 import { useOrders } from "../../context/OrderContext";
+import MainLayout from "../../layout/MainLayout";
+import Nav from "../../components/Nav";
+
 
 const Checkout = () => {
   const { checkout } = useOrders()
@@ -35,7 +37,8 @@ const Checkout = () => {
   };
 
   return (
-    <Page>
+    <MainLayout>
+      <Nav />
       <div className="max-w-6xl mx-auto pt-5 px-5">
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-x-4">
           {isLoading && (
@@ -194,7 +197,7 @@ const Checkout = () => {
           </motion.div>
         </div>
       </div>
-    </Page>
+    </MainLayout>
   );
 };
 

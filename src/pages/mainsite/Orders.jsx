@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import orderService from "../../api/services/order.service";
 import { useUser } from "../../context/UserContext";
-import Page from "../../layout/Page";
 import CardProfile from "../../components/CardProfile";
 import OrderCard from "../../components/OrderCard";
+import MainLayout from "../../layout/MainLayout";
+import Nav from "../../components/Nav";
 
 const Orders = () => {
   const [page, setPage] = useState(1);
@@ -27,7 +27,9 @@ const Orders = () => {
   })
 
   return (
-    <Page>
+    <MainLayout>
+      <title>Orders - Pelotex</title>
+      <Nav />
       <div className="max-w-6xl mx-auto pt-20 px-5 grid grid-cols-1 md:grid-cols-4">
         <div className="col-span-1 mb-7">
           <CardProfile session={32} orders={32} />
@@ -43,7 +45,7 @@ const Orders = () => {
           </div>
         )}
       </div>
-    </Page>
+    </MainLayout>
   );
 };
 

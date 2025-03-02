@@ -8,7 +8,6 @@ import CardProductSummary from "../../components/CardProductSummary";
 import Stepper from "../../components/Stepper";
 
 const Cart = () => {
-
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
@@ -18,6 +17,9 @@ const Cart = () => {
   
   return (
     <MainLayout>
+      {/* meta */}
+      <title>Checkout - Pelotex</title>
+
       <Nav />
       <div className="max-w-6xl mx-auto pt-14 md:px-0">
         <div className="max-w-6xl mx-auto px-5">
@@ -38,7 +40,7 @@ const Cart = () => {
                 <div className="rounded-xl bg-white px-5 pt-5 mt-5 shadow-lg overflow-hidden">
                   {(activeStep==0) && (<CartItems />)}
                   {(activeStep==1) && (<PaymentForm next={handleNext} prev={handlePrev} />)}
-                  {(activeStep==2) && (<OrderConfirmation isSuccess={false} />)}
+                  {(activeStep==2) && (<OrderConfirmation />)}
                 </div>
               </div>
             </div>

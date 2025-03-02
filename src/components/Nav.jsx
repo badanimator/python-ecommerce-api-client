@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Menu, ShoppingBag, LogOut, Clipboard, Heart, LogIn} from "react-feather";
+import { User, ShoppingBag, LogOut, Clipboard, Heart, LogIn} from "react-feather";
 import { Link } from "react-router-dom";
 
 import { useCart } from "../context/CartContext";

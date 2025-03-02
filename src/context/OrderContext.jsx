@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useUser } from "./UserContext";
 import orderService from "../api/services/order.service";
 
@@ -6,6 +6,8 @@ const OrderContext = createContext();
 
 const OrderProvider = ({ children }) => {
   const { isLoggedIn } = useUser();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const checkout = (phone_number, payment_channel, email, address, city, region)=>{
     if(isLoggedIn){
@@ -15,7 +17,13 @@ const OrderProvider = ({ children }) => {
     }
   }
 
-  return <OrderContext.Provider value={{checkout}}>
+  return <OrderContext.Provider value={{
+      failed,
+      isSuccess,
+      checkout, 
+      setIsSuccess,
+      setFailed
+    }}>
     {children}
   </OrderContext.Provider>;
 };

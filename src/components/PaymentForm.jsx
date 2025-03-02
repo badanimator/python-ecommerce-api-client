@@ -1,21 +1,24 @@
 import { useState } from "react";     
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 import { useOrders } from "../context/OrderContext";
 import { useCart } from "../context/CartContext";
 import { useQuery } from "@tanstack/react-query";
+import { ClipLoader } from "react-spinners";
 import axios from "axios";
 
 const PAYSTACK_BEARER_TOKEN = import.meta.env.PROD? import.meta.env.PAYSTACK_BEARER_TOKEN : "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
 
 const logos = {
-  mtn:"c:\Users\LATITUDE\AppData\Local\Temp\New-mtn-logo-768x768-4066736583.jpg", 
-  telecel:"c:\Users\LATITUDE\AppData\Local\Temp\Telecel-Cash-Logo-750x375-3544233114.jpg", 
-  airteltigo:"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.techfocus24.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fd586fa41-972d-4baf-9c23-8fa09208f342.jpeg&f=1&nofb=1&ipt=d24e0befd72212555300d0a911fdf1e71956a3dd254138b6bd30ab5a957e1037&ipo=images"
+  mtn:"mtn_logo.png", 
+  telecel:"telecel_logo.png", 
+  airteltigo:"airteltigo_logo.jpeg"
 }
 
 function PaymentForm({ next, prev }) {
+  const { setIsSuccess, setFailed } = useOrders();
   const { cartData } = useCart();
   const { checkout } = useOrders();
   const [isPaying, setIsPaying] = useState(false);
@@ -24,17 +27,20 @@ function PaymentForm({ next, prev }) {
   const {register, handleSubmit, formState: { errors } } = useForm();
   
   const onSubmit = async (data) => {
+    setIsPaying(true);
     const { phone_number, payment_channel, email, address, city, region } = data
     checkout(phone_number, payment_channel, email, address, city, region).then(
       (data)=>{
         const responseData = data.data.data;
         setStatusData(responseData);
-        setIsPaying(true);
+        setIsSuccess(true);
         cartData.refetch();
+        next()
       }
     ).catch((errors)=> {
+      const response = errors? errors.response.data.data.message: "Payment failed";
       handCancelPayment()
-      toast.error("Payment unsuccessful")
+      toast.error(response)
     })
   };
 
@@ -59,9 +65,11 @@ function PaymentForm({ next, prev }) {
         const status = data.data.data.status;
         if (status=="failed") {
           handCancelPayment();
+          setFailed(true)
           next()
         }else if(status=="success"){
           handCancelPayment();
+          setIsSuccess(true);
           next();
         }
         response = data;
@@ -73,35 +81,33 @@ function PaymentForm({ next, prev }) {
 
   return (
     <>
-    {isPaying && (
-      <div className="w-full h-screen flex justify-center place-items-center absolute top-0 right-0 bg-white backdrop-blur-sm bg-opacity-20">
-        <div className="flex flex-col justify-center items-center w-full">
-          <p className="bg-white text-black p-5 w-64 shadow-xl text-3xl rounded ">
-            {statusData.display_text? statusData.display_text:"Please complete the payment by inputing your PIN"}
-          </p>
-          <img
-            src="https://i.ibb.co/8jP3GyP/Dual-Ball-1-1s-200px.gif"
-            className="w-20"
-            alt=""
-          />
-          
+      <Dialog open={isPaying} onClose={() => setIsOpen(false)} className="relative z-50 ">
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-white backdrop-blur-sm bg-opacity-5 ">
+          <DialogPanel className="max-w-lg space-y-4 border bg-white p-5 rounded-lg">
+            <DialogTitle className="text-black font-bold text-md">PAYING</DialogTitle>
+            <div className="flex flex-col justify-center items-center gap-5">
+              <p className="text-lg">{statusData.display_text? statusData.display_text:"Please complete the payment by inputing your PIN"}</p>
+              <ClipLoader className="w-4 h-4" />
+            </div>
+            <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handCancelPayment}>Cancel</button>
+          </DialogPanel>
         </div>
-      </div>
-    )}
+      </Dialog>
+      
       <form
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h1 className="text-black font-bold text-md">PAYMENT INFORMATION</h1>
-          <ul className="flex gap-2">
+          <ul className="flex items-center gap-2">
             <li className="bg-blend-darken">
-              <img src={logos.mtn} alt="MTN" />
+              <img src={logos.mtn} width={25} alt="MTN" />
             </li>
             <li className="bg-blend-darken">
-              <img src={logos.telecel} alt="AIRTELTIGO" />
+              <img src={logos.telecel} width={40} alt="AIRTELTIGO" />
             </li>
             <li className="bg-blend-darken">
-              <img src={logos.telecel} alt="TELECEL" />
+              <img src={logos.airteltigo} width={35} alt="TELECEL" />
             </li>
           </ul>
         </div>

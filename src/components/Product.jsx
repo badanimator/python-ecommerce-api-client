@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const Product = ({ item, ref }) => {
 
   return (
-    <Link to={`/products/${item.slug}`} className="rounded-xl cursor-pointer hover:shadow-lg" ref={ref}>
+    <Link to={`/details/${item.slug}`} className="rounded-xl cursor-pointer hover:shadow-lg" ref={ref}>
       <div className="overflow-hidden">
         <motion.div
           initial={{ scale: 1.3, x: 50, opacity: 0 }}
