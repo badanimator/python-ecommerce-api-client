@@ -2,10 +2,11 @@ import { Grid, Columns, Filter, ChevronDown } from "react-feather"
 import { useState } from "react";
 import { useProduct } from "../context/ProductContext";
 import CardSkeleton from "./CardSkeleton";
+import { SyncLoader } from "react-spinners";
 
 
 
-const ProductsCard = ({children, isLoading})=>{
+const ProductsCard = ({children, isLoading, hasNext, handleNext})=>{
   const [grid, setGrid] = useState(4);
   const [sortOpen, setSortOpen] = useState(false);
   const {setOrderby, orderby} = useProduct();
@@ -41,6 +42,7 @@ const ProductsCard = ({children, isLoading})=>{
         </div>
       </div>
       <div className={`grid grid-cols-2 md:grid-cols-${grid} lg:grid-cols-${grid} gap-x-4 gap-y-6`}>
+        
         {children}
         {isLoading && (
           <>
@@ -53,6 +55,15 @@ const ProductsCard = ({children, isLoading})=>{
             <CardSkeleton />
             <CardSkeleton />
           </>
+        )}
+        {hasNext && (
+          <button 
+            onClick={handleNext}
+            disabled={isLoading}
+            className="col-span-full rounded-lg border border-gray-500 bg-white text-gray-500 hover:text-black hover:border-black h-10 " type="button"
+          >
+            {isLoading? <SyncLoader size={10} />: "See more"}  
+          </button>
         )}
       </div>
     </div>

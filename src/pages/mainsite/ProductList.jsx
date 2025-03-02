@@ -10,7 +10,7 @@ import SideCategory from "../../components/SideCategory";
 import ShopCarousel from "../../components/ShopCarousel";
 import ProductsCard from "../../components/ProductsCard";
 import Lottie from "lottie-web";
-import NotFound from '../../../public/notfound.json'; // Replace 'your
+import NotFound from '../../../public/notfound.json';
 import { useRef } from "react";
 
 
@@ -63,16 +63,12 @@ const ProductList = () => {
           </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-3 flex flex-col p-2 mx-2 md:mx-0">
             <ShopCarousel />
-            <ProductsCard isLoading={productData.isFetching}>
+            <ProductsCard isLoading={productData.isFetching} hasNext={productData.hasNextPage} handleNext={productData.fetchNextPage}>
               {/* no data */}
               <div className={`${!(productData.isSuccess && productData.data.pages[0].meta.total === 0) && "hidden"} col-span-full h-80`} ref={animationContainer}></div>
               {/* data */}
               {(productData.isSuccess && productData.data.pages.length > 0) && (
                 productData.data.pages.map((page)=>page.items.map((item, index)=> <Product key={index} item={item}/>))
-              )}
-              {/* paginataion */}
-              {productData.hasNextPage && (
-                <button onClick={()=>productData.fetchNextPage()} className="col-span-full rounded-lg border border-gray-500 bg-white text-gray-500 hover:text-gray-500 h-10 " type="button">See more</button>
               )}
             </ProductsCard>
           </div>
