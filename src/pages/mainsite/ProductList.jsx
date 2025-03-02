@@ -63,7 +63,7 @@ const ProductList = () => {
           </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-3 flex flex-col p-2 mx-2 md:mx-0">
             <ShopCarousel />
-            <ProductsCard isLoading={productData.isFetching} hasNext={productData.hasNextPage} handleNext={productData.fetchNextPage}>
+            <ProductsCard isLoading={productData.isLoading} hasNext={productData.hasNextPage} handleNext={productData.fetchNextPage}>
               {/* no data */}
               <div className={`${!(productData.isSuccess && productData.data.pages[0].meta.total === 0) && "hidden"} col-span-full h-80`} ref={animationContainer}></div>
               {/* data */}

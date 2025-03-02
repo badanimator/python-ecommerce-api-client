@@ -1,7 +1,7 @@
 import { useState } from "react";     
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 import { useOrders } from "../context/OrderContext";
 import { useCart } from "../context/CartContext";
@@ -33,14 +33,12 @@ function PaymentForm({ next, prev }) {
       (data)=>{
         const responseData = data.data.data;
         setStatusData(responseData);
-        setIsSuccess(true);
         cartData.refetch();
-        next()
       }
     ).catch((errors)=> {
       const response = errors? errors.response.data.data.message: "Payment failed";
-      handCancelPayment()
-      toast.error(response)
+      handCancelPayment();
+      toast.error(response);
     })
   };
 
