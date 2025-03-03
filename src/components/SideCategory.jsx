@@ -76,7 +76,7 @@ function SideCategory() {
                 
                 <div className={(openCategory==key)?"pt-6":"hidden"}>
                   <div className="space-y-6 h-32 overflow-y-auto">
-                    {cat?.subfolder.map((folder, key)=>(
+                    {cat?.subfolder?.map((folder, key)=>(
                       <div key={key} className="flex gap-3">
                         <div className="flex h-5 shrink-0 items-center">
                           <div className="group grid size-4 grid-cols-1">
