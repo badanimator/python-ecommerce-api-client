@@ -28,8 +28,9 @@ function PaymentForm({ next, prev }) {
   
   const onSubmit = async (data) => {
     setIsPaying(true);
-    const { phone_number, payment_channel, email, address, city, region } = data
-    checkout(phone_number, payment_channel, email, address, city, region).then(
+    const { phone_number, payment_channel, email, address_line1, address_line2, city, region } = data
+    console.log(region)
+    checkout(phone_number, payment_channel, email, address_line1, address_line2, city, region ).then(
       (data)=>{
         const responseData = data.data.data;
         setStatusData(responseData);
@@ -150,20 +151,28 @@ function PaymentForm({ next, prev }) {
               </p>
             )}
           </div>
-          <div className="md:col-span-2">
+          <div className="md:col-span-1">
             <input
               type="text"
-              name="address"
-              {...register("address", { required: true })}
-              placeholder="Address"
+              name="address_line1"
+              {...register("address_line1", { required: true })}
+              placeholder="Address Line1"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
-            {errors?.address && (
+            {errors?.address_line1 && (
               <p className="mt-1 italic text-red-500">
-                {errors?.address?.type === "required" && "Address required"}
+                {errors?.address_line1?.type === "required" && "Address required"}
               </p>
             )}
-
+          </div>
+          <div className="md:col-span-1">
+            <input
+              type="text"
+              name="address_line1"
+              {...register("address_line2")}
+              placeholder="Address Line2"
+              className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
+            />
           </div>
           <div className="md:col-span-1">
             <input
@@ -199,17 +208,17 @@ function PaymentForm({ next, prev }) {
           
         </div>
         
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-4 gap-4">
           <button
             type="button"
-            className="bg-white border border-gray-700 rounded-sm w-1/4 text-black py-2 mt-3"
+            className="bg-white border border-gray-700 rounded-sm w-full text-black py-2 mt-3"
             onClick={() => prev()} 
           >
             Back
           </button>
           <button
             type="submit"
-            className="bg-black rounded-sm w-1/4 text-white py-2 mt-3"
+            className="bg-black rounded-sm w-full text-white py-2 mt-3"
           >
             Place Order
           </button>

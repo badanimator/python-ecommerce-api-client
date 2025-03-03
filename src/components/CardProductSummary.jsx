@@ -15,7 +15,7 @@ const CardProductSummary = ({next, enableProcess})=>{
 
       <div className="text-sm pt-1 font-semibold pb-2 border-b border-black flex justify-between place-items-center">
         <p className="">SUBTOTAL</p>
-        { "GH" + cartData?.data?.cart_subtotal}
+        { cartData?.data?.formatted_cart_subtotal	}
       </div>
 
       <div className="my-3 border-b border-black pb-2">
@@ -24,8 +24,8 @@ const CardProductSummary = ({next, enableProcess})=>{
             key={key}
             className="flex justify-between place-items-center text-sm mb-1"
         >
-            <p className="pr-3 line-clamp-1">{item.product.name}</p>
-            {item.product.currency + "" + item.product.price}
+          <p className="pr-3 line-clamp-1">{item.product.name}</p>
+            { item.product.formatted_price	} x {item.quantity}
         </div>
         ))}
         <div className="flex justify-between place-items-center text-sm mb-1">
@@ -35,8 +35,8 @@ const CardProductSummary = ({next, enableProcess})=>{
       </div>
 
       <div className="flex justify-between place-items-center font-semibold">
-          <p>TOTAL</p>
-          {cartData?.data?.cart_subtotal}
+        <p>TOTAL</p>
+        {cartData?.data?.formatted_cart_subtotal}
       </div>
 
       {enableProcess && (

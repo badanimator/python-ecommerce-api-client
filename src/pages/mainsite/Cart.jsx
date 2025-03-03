@@ -6,8 +6,11 @@ import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
 import CardProductSummary from "../../components/CardProductSummary";
 import Stepper from "../../components/Stepper";
+import { useUser } from "../../context/UserContext";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
+  const {isLoggedIn} = useUser();
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
@@ -46,6 +49,16 @@ const Cart = () => {
             </div>
 
             <div className="mt-5 md:mt-28 col-span-1">
+              {/* Guest users */}
+              {!isLoggedIn && (
+                <div className="flex flex-col items-center gap-2">
+                  <Link to={"/login"} className={`flex justify-center py-2 px-3 border border-gray-400 text-black w-full rounded-lg bg-white`}
+                  >
+                    <span>Sign In</span>
+                  </Link>
+                  <p className="text-xs my-2 text-gray-400">Continue as guest</p>
+                </div>
+              )}
               <CardProductSummary next={handleNext} enableProcess={activeStep === 0}/>
             </div>
           </div>

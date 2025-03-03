@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../context/WishlistContext";
 import { useState } from "react";
-
+import { SyncLoader } from "react-spinners";
 
 
 function WishProduct({ item }) {
@@ -22,8 +22,8 @@ function WishProduct({ item }) {
       </motion.div>
       <div className="px-2 py-1 text-black">
         <p className="text-sm line-clamp-1">{item.product.name}</p>
-        <p className="text-xs my-1.5">{item.product.currency + item.product.price}</p>
-        <Link to={"/products/" + item.product.slug}>
+        <p className="text-xs my-1.5">{item.product.formatted_price}</p>
+        <Link to={"/details/" + item.product.slug}>
           <button type="button" className="text-white bg-black border border-black py-1 text-xs w-full rounded-lg">
             View product
           </button>
@@ -38,7 +38,7 @@ function WishProduct({ item }) {
           }}
           className="text-black mt-1.5 bg-white border border-black py-1 text-xs w-full rounded-lg"
         >
-          {isDeleting? "Removing...":"Remove"}
+          {isDeleting? <SyncLoader size={8} />:"Remove"}
         </button>
       </div>
     </div>

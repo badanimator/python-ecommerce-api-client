@@ -33,16 +33,16 @@ function BasketProduct({ item }) {
           <div className="ml-3 flex flex-col text-black justify-between py-2">
             <p className="font-medium line-clamp-1">{item.product.name}</p>
             <ul className="text-xs md:text-sm leading-relaxed text-gray-400">
-              <li>SKU: {item.color}</li>
+              { item.variation && <li>SKU: {item.variation.sku}</li> }
               <li>Category: {item.product.category.name}</li>
               <li>Quantity: {item.quantity}</li>
-              <li>Size: {item.selectedSizeProp}</li>
+              { item.variation && <li>Size: {item.variation.name}</li> }
             </ul>
           </div>
         </div>
       </Link>
       <div className="flex flex-col justify-between py-1">
-        <span className="font-semibold text-black text-righ">{item.product.currency} {item.product.price}</span>
+        <span className="font-semibold text-black text-righ">{item.product.formatted_price}</span>
         <div className="flex ml-auto text-black mt-1 md:mt-0">
           {/* decrement */}
           <button

@@ -9,11 +9,11 @@ const OrderProvider = ({ children }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const checkout = (phone_number, payment_channel, email, address, city, region)=>{
+  const checkout = (phone_number, payment_channel, email, address_line1, address_line2, city, region)=>{
     if(isLoggedIn){
-      return orderService.userCheckout(phone_number, payment_channel, email, address, city, region);
+      return orderService.userCheckout(phone_number, payment_channel, email, address_line1, address_line2, city, region);
     }else{
-      return orderService.guestCheckout(phone_number, payment_channel, email, address, city, region)
+      return orderService.guestCheckout(phone_number, payment_channel, email, address_line1, address_line2, city, region)
     }
   }
 
