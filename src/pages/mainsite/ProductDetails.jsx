@@ -74,6 +74,8 @@ const ProductDetails = () => {
     return currentThumbnailKey===thumbnailKey
   }
 
+
+  const images = [""]
   return (
     <MainLayout>
       <title>Details - Pelotex</title>
@@ -110,7 +112,7 @@ const ProductDetails = () => {
           <div className="w-full bg-white md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
             {/* thumbnail */}
             <div className="md:w-1/3">
-              <div className="cursor-pointer" onClick={() => {setVisible(true); console.log("visis")}}>
+              <div className="cursor-pointer" onClick={() => setVisible(true)}>
                 <img
                   className="h-60 object-contain w-full md:rounded-2xl border p-2 line-clamp-1"
                   src={dataItem.images[index].url}
@@ -120,7 +122,7 @@ const ProductDetails = () => {
               
               {/* image slider */}
               <PhotoSlider
-                images={dataItem.images.map((item, key) => ({ src: item, key: key }))}
+                images={dataItem.images.map((image, key) => ({ src: image.url, key: key }))}
                 visible={visible}
                 onClose={() => setVisible(false)}
                 index={index}
