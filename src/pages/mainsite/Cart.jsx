@@ -52,7 +52,7 @@ const Cart = () => {
               {/* Guest users */}
               {!isLoggedIn && (
                 <div className="flex flex-col items-center gap-2">
-                  <Link to={"/login"} className={`flex justify-center py-2 px-3 border border-gray-400 text-black w-full rounded-lg bg-white`}
+                  <Link to={"/login"} className={`flex justify-center py-2 px-3 text-white w-full bg-black`}
                   >
                     <span>Sign In</span>
                   </Link>

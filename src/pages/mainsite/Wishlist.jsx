@@ -33,16 +33,12 @@ function Wishlist() {
           </div>
 
           <div className="overflow-hidden md:pl-10 row-start-1 md:col-start-3 mb-6 md:mb-0 h-48 md:h-full">
-            <div className="relative">
-              <div className="text-white flex justify-center place-items-center text-2xl absolute w-full rounded-xl bg-gray-600 ml-10 bg-opacity-60 font-bold right-0 top-0 h-48 md:h-full">
-                <h1>WISHLIST</h1>
+            <img src="wishlist.svg" className="rounded-xl w-full" />
+            {/* <div className="relative">
+              <div className="text-white flex justify-center place-items-center text-2xl absolute w-full rounded-xl bg-gray-100 ml-10 bg-opacity-60 font-bold right-0 top-0 h-48 md:h-full">
+                <h1 className="text-black">WISHLIST</h1>
               </div>
-              <img
-                src="https://i.ibb.co/N23Cxhz/8b683a2f7a998bdd6df80046dc1f5292.jpg"
-                className="object-cover rounded-xl w-full"
-                alt=""
-              />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
