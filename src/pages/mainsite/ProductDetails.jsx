@@ -74,8 +74,6 @@ const ProductDetails = () => {
     return currentThumbnailKey===thumbnailKey
   }
 
-
-  const images = [""]
   return (
     <MainLayout>
       <title>Details - Pelotex</title>
@@ -92,8 +90,34 @@ const ProductDetails = () => {
         </div> */}
 
         {isLoading && (<>
-          <div className="w-full bg-white md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
-            <Skeleton className="h-56 mb-2" />
+          <div className="grid grid-cols-1 md:grid-cols-10 rounded md:rounded-2xl bg-white md:py-8 md:px-10 md:gap-6">
+            <div className="col-span-3">
+              <Skeleton className="h-60 rounded-t-sm md:rounded-2xl" />
+              <div className="flex flex-grow gap-3 px-2 md:px-0 mt-4">
+                <Skeleton className="h-16 w-16 md:w-14 md:h-14 rounded-xl" />
+                <Skeleton className="h-16 w-16 md:w-14 md:h-14 rounded-xl" />
+                <Skeleton className="h-16 w-16 md:w-14 md:h-14 rounded-xl" />
+              </div>
+            </div>
+            <div className="col-span-7 gap-x-2">
+              <div className="px-2">
+                <Skeleton className="h-4 w-1/4" />
+              </div>
+              <div className="px-2">
+                <Skeleton className="h-4 w-1/4" />
+              </div>
+              <div className="px-2">
+                <Skeleton className="h-8 w-1/4 md:mb-24" />
+              </div>
+              <div className="grid grid-cols-6 gap-4 p-2 md:p-0">
+                <div className="col-span-4 md:col-span-3">
+                  <Skeleton className="h-12" />
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <Skeleton className="col-span-1 h-12" />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="text-black p-2 md:px-10 md:py-6 mt-14 bg-white md:rounded-2xl shadow-lg">
@@ -109,12 +133,12 @@ const ProductDetails = () => {
 
 
         {isSuccess && (<>
-          <div className="w-full bg-white md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
+          <div className="w-full bg-white rounded md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
             {/* thumbnail */}
             <div className="md:w-1/3">
               <div className="cursor-pointer" onClick={() => setVisible(true)}>
                 <img
-                  className="h-60 object-contain w-full md:rounded-2xl border p-2 line-clamp-1"
+                  className="h-60 object-contain w-full rounded-t-sm md:rounded-2xl md:border p-2"
                   src={dataItem.images[index].url}
                   alt={dataItem.images[index].url}
                 />
@@ -247,7 +271,7 @@ const ProductDetails = () => {
           </div>
           
           {(dataItem.related_products.length > 0) && (
-            <div className="text-black p-2 md:px-10 md:py-6 mt-14 bg-white md:rounded-2xl shadow-lg">
+            <div className="text-black p-2 md:px-10 rounded md:py-6 mt-14 bg-white md:rounded-2xl shadow-lg">
               <p className="mb-4 font-medium text-lg">You may also like:</p>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-4 gap-y-6">
                 {
