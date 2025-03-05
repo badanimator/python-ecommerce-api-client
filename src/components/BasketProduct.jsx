@@ -25,9 +25,9 @@ function BasketProduct({ item }) {
             animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}
           >
             <img
-              className="w-full md:w-32 h-32 object-cover rounded-xl"
+              className="w-full md:w-32 h-32 object-contain rounded-xl border p-1"
               src={item.product.thumbnail}
-              alt={item.product.name}
+              alt={item.product.thumbnail}
             />
           </motion.div>
           <div className="ml-3 flex flex-col text-black justify-between py-2">

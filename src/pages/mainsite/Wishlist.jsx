@@ -3,6 +3,7 @@ import WishProduct from "../../components/wishProduct";
 import CardSkeleton from "../../components/CardSkeleton";
 import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
+import { ShoppingBag } from "react-feather";
 
 function Wishlist() {
   const { wishlistData } = useWishlist();
@@ -23,22 +24,14 @@ function Wishlist() {
                 </div>
             )}
             {wishlistData.isLoading && (
-              <>
-                <CardSkeleton />
-                <CardSkeleton />
-                <CardSkeleton />
-                <CardSkeleton />
-              </>
+              <CardSkeleton />
             )}
           </div>
 
           <div className="overflow-hidden md:pl-10 row-start-1 md:col-start-3 mb-6 md:mb-0 h-48 md:h-full">
-            <img src="wishlist.svg" className="rounded-xl w-full" />
-            {/* <div className="relative">
-              <div className="text-white flex justify-center place-items-center text-2xl absolute w-full rounded-xl bg-gray-100 ml-10 bg-opacity-60 font-bold right-0 top-0 h-48 md:h-full">
-                <h1 className="text-black">WISHLIST</h1>
-              </div>
-            </div> */}
+            <div className="h-40 rounded-xl">
+              <ShoppingBag className="w-full h-full text-gray-200" />
+            </div>
           </div>
         </div>
       </div>

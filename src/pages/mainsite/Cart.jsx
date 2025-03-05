@@ -22,7 +22,6 @@ const Cart = () => {
     <MainLayout>
       {/* meta */}
       <title>Checkout - Pelotex</title>
-
       <Nav />
       <div className="max-w-6xl mx-auto pt-14 md:px-0">
         <div className="max-w-6xl mx-auto px-5">

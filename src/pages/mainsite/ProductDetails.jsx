@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "react-feather";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ShoppingBag, Heart } from "react-feather";
@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import { SyncLoader } from "react-spinners";
+import { PhotoSlider } from "react-photo-view";
 
 import productService from "../../api/services/product.service";
 import Product from "../../components/Product";
@@ -21,7 +22,8 @@ import Nav from "../../components/Nav";
 const ProductDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [thumbnail, setThumbnail] = useState(0);
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
   const { isInCart, addItem, cartData } = useCart();
   const { addWishlistItem, isInWishlist, wishlistData } = useWishlist();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -106,21 +108,32 @@ const ProductDetails = () => {
 
         {isSuccess && (<>
           <div className="w-full bg-white md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
-            <div className="photo md:w-1/3">
-              <div>
+            {/* thumbnail */}
+            <div className="md:w-1/3">
+              <div className="cursor-pointer" onClick={() => {setVisible(true); console.log("visis")}}>
                 <img
-                  className=" h-60 object-contain w-full md:rounded-2xl"
-                  src={dataItem?.images[thumbnail].url}
-                  alt=""
+                  className="h-60 object-contain w-full md:rounded-2xl border p-2 line-clamp-1"
+                  src={dataItem.images[index].url}
+                  alt={dataItem.images[index].url}
                 />
               </div>
+              
+              {/* image slider */}
+              <PhotoSlider
+                images={dataItem.images.map((item, key) => ({ src: item, key: key }))}
+                visible={visible}
+                onClose={() => setVisible(false)}
+                index={index}
+                onIndexChange={setIndex}
+              />
+
               <div className="px-2 md:px-0 flex mt-4 overflow-y">
                 {
                   dataItem.images.map((image, key)=> (
                     <img
                       key={key}
                       className={
-                        isActiveThumbnail(thumbnail, key)? 
+                        isActiveThumbnail(index, key)? 
                           "overflow-hidden border-2 border-black filter brightness-90 md:w-14 md:h-14 h-16 w-16 rounded-xl object-cover mr-3 cursor-pointer duration-100 "
                           :
                           "overflow-hidden border-2 filter brightness-90 md:w-14 md:h-14 h-16 w-16 rounded-xl object-cover mr-3 cursor-pointer duration-100 " 
@@ -130,7 +143,7 @@ const ProductDetails = () => {
                       src={image.url}
                       alt={dataItem.name}
                       style={{height: 60}}
-                      onClick={()=> setThumbnail(key)}
+                      onClick={()=> setIndex(key)}
                     />
                 ))}
               </div>

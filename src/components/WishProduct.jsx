@@ -15,7 +15,7 @@ function WishProduct({ item }) {
         animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}
       >
         <img
-          className="h-28 rounded-lg object-cover w-full"
+          className="h-28 rounded-lg object-contain w-full"
           src={item.product.thumbnail}
           alt={item.product.name}
         />

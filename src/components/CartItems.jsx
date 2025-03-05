@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { useCart } from "../context/CartContext";
 import BasketProduct from "./BasketProduct";
+import { ShoppingCart } from "react-feather";
 
 function CartItems() {
   const { cartData } = useCart();
@@ -46,11 +47,7 @@ function CartItems() {
           <BasketProduct key={key} item={item} />
         )):(
         <div className="flex gap-4 flex-col items-center text-sm mb-10 mx-auto opacity-20">
-          <img
-            className="md:w-1/3 object-contain w-full"
-            src="empty_cart.svg"
-            alt=""
-          />
+          <ShoppingCart className="w-24 h-24" />
           <p className="text-center">
             Your basket is empty,
             <br />
