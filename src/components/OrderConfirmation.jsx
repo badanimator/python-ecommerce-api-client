@@ -34,8 +34,11 @@ function OrderConfirmation() {
       ): failed? (
         <div className="flex flex-col place-items-center text-center text-cusblack">
           <X className="w-28 h-28 text-red-600" />
+          <h1 className="my-2 text-2xl font font-semibold">
+            Insufficient balance
+          </h1>
           <p className="text-sm my-2 md:w-2/3 leading-relaxed">
-            {msg}
+            {msg + ". Topup and try again."}
           </p>
         </div>
       ):(

@@ -90,7 +90,7 @@ function PaymentForm({ next, prev }) {
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-white backdrop-blur-sm bg-opacity-5 ">
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-5 rounded-lg">
             <DialogTitle className="text-black font-bold text-md">PAYING</DialogTitle>
-            <div className="flex flex-col justify-center items-center gap-5 min-w-96">
+            <div className="flex flex-col justify-center items-center gap-5 min-w-52 md:min-w-96">
               <p className="text-lg">{statusData.display_text? statusData.display_text:<ClipLoader className="w-4 h-4" />}</p>
             </div>
             <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handCancelPayment}>Cancel</button>
