@@ -18,7 +18,9 @@ const logos = {
 }
 
 function PaymentForm({ next, prev }) {
+  const [pinCode, setPinCode] = useState("");
   const { setIsSuccess, setFailed, setMsg } = useOrders();
+  const [otpSent, setOtpSent] = useState(false);
   const { cartData } = useCart();
   const { checkout } = useOrders();
   const [isPaying, setIsPaying] = useState(false);
@@ -47,6 +49,15 @@ function PaymentForm({ next, prev }) {
     setIsPaying(false);
   }
 
+  const handleSendPinCode = () => {
+    const {reference} = statusData;
+    axios.post("https://api.paystack.co/charge/submit_otp", {pinCode, reference}).then(res => {
+      setStatusData(res.data.data);
+    }).finally(()=>{
+      setOtpSent(false);
+    })
+  }
+
   useQuery({
     enabled: (statusData.reference !== undefined),
     queryKey:["verify_payment"],
@@ -64,7 +75,7 @@ function PaymentForm({ next, prev }) {
         if (status==="failed" && message==="LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED") {
           handCancelPayment();
           setFailed(true)
-          setMsg("Insufficient balance")
+          setMsg("Please your balance is insufficient to complete this transaction.")
           next()
         }else if(status==="failed"){
           handCancelPayment();
@@ -76,6 +87,8 @@ function PaymentForm({ next, prev }) {
           setIsSuccess(true);
           setMsg(res.data.message);
           next();
+        }else if (status==="send_otp"){
+          setOtpSent(true);
         }
         response = res;
       })
@@ -91,8 +104,24 @@ function PaymentForm({ next, prev }) {
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-5 rounded-lg">
             <DialogTitle className="text-black font-bold text-md">PAYING</DialogTitle>
             <div className="flex flex-col justify-center items-center gap-5 min-w-52 md:min-w-96">
-              <p className="text-lg">{statusData.display_text? statusData.display_text:<ClipLoader className="w-4 h-4" />}</p>
+              <p className="text-lg">
+                {otpSent? (
+                  <div className="flex flex-col gap-y-5">
+                    <p className="font-semibold w-full">{statusData.display_text}</p>
+                    <input
+                      onChange={(e)=> setPinCode(e.target.value)}
+                      type="text"
+                      placeholder="Pin Code*"
+                      className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
+                    />
+                  </div>
+                ):statusData.display_text? <p className="font-semibold">{statusData.display_text}</p>:(
+                <ClipLoader className="w-4 h-4" />
+                )}
+            </p>
             </div>
+
+            {otpSent && <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handleSendPinCode}>Send Code</button>}
             <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handCancelPayment}>Cancel</button>
           </DialogPanel>
         </div>
@@ -129,7 +158,7 @@ function PaymentForm({ next, prev }) {
               {...register("phone_number", { required: true })}
               type="text"
               name="phone_number"
-              placeholder="Phone Number"
+              placeholder="Phone Number*"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
             {errors?.region && (
@@ -147,7 +176,7 @@ function PaymentForm({ next, prev }) {
               type="text"
               name="email"
               {...register("email", { required: true })}
-              placeholder="Email"
+              placeholder="Email*"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
             {errors?.email && (
@@ -161,7 +190,7 @@ function PaymentForm({ next, prev }) {
               type="text"
               name="address_line1"
               {...register("address_line1", { required: true })}
-              placeholder="Address Line1"
+              placeholder="Address Line1*"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
             {errors?.address_line1 && (
@@ -184,7 +213,7 @@ function PaymentForm({ next, prev }) {
               {...register("city", { required: true })}
               type="text"
               name="city"
-              placeholder="City"
+              placeholder="City*"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
             {errors?.city && (
@@ -199,7 +228,7 @@ function PaymentForm({ next, prev }) {
               {...register("region", { required: true })}
               type="text"
               name="region"
-              placeholder="Region"
+              placeholder="Region*"
               className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
             />
             {errors?.region && (
