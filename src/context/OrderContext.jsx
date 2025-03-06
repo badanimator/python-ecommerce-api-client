@@ -8,6 +8,7 @@ const OrderProvider = ({ children }) => {
   const { isLoggedIn } = useUser();
   const [isSuccess, setIsSuccess] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const checkout = (phone_number, payment_channel, email, address_line1, address_line2, city, region)=>{
     if(isLoggedIn){
@@ -20,9 +21,11 @@ const OrderProvider = ({ children }) => {
   return <OrderContext.Provider value={{
       failed,
       isSuccess,
+      msg,
       checkout, 
       setIsSuccess,
-      setFailed
+      setFailed,
+      setMsg
     }}>
     {children}
   </OrderContext.Provider>;

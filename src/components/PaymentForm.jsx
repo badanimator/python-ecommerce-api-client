@@ -18,7 +18,7 @@ const logos = {
 }
 
 function PaymentForm({ next, prev }) {
-  const { setIsSuccess, setFailed } = useOrders();
+  const { setIsSuccess, setFailed, setMsg } = useOrders();
   const { cartData } = useCart();
   const { checkout } = useOrders();
   const [isPaying, setIsPaying] = useState(false);
@@ -59,18 +59,25 @@ function PaymentForm({ next, prev }) {
             Authorization:"Bearer " + PAYSTACK_BEARER_TOKEN
           }
         }
-      ).then((data)=> {
-        const status = data?.data?.data?.status;
-        if (status=="failed") {
+      ).then((res)=> {
+        const { status, message } = res.data.data || {status:"failed", message: "something went wrong"};
+        if (status==="failed" && message==="LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED") {
           handCancelPayment();
           setFailed(true)
+          setMsg("Insufficient balance")
+          next()
+        }else if(status==="failed"){
+          handCancelPayment();
+          setFailed(true)
+          setMsg(message);
           next()
         }else if(status=="success"){
           handCancelPayment();
           setIsSuccess(true);
+          setMsg(res.data.message);
           next();
         }
-        response = data;
+        response = res;
       })
       return response;
     },
