@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 
-const PAYSTACK_BEARER_TOKEN = import.meta.env.PROD? import.meta.env.VITE_PAYSTACK_BEARER_TOKEN : "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
+const PAYSTACK_BEARER_TOKEN = import.meta.env.VITE_PAYSTACK_BEARER_TOKEN || "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
 
 const logos = {
   mtn:"mtn_logo.png", 
@@ -29,15 +29,14 @@ function PaymentForm({ next, prev }) {
   const onSubmit = async (data) => {
     setIsPaying(true);
     const { phone_number, payment_channel, email, address_line1, address_line2, city, region } = data
-    console.log(region)
     checkout(phone_number, payment_channel, email, address_line1, address_line2, city, region ).then(
       (data)=>{
-        const responseData = data.data.data;
+        const responseData = data?.data?.data;
         setStatusData(responseData);
         cartData.refetch();
       }
     ).catch((errors)=> {
-      const response = errors? errors.response.data.data.message: "Payment failed";
+      const response = errors? errors?.response?.data?.data?.message: "Payment failed";
       handCancelPayment();
       toast.error(response);
     })
@@ -61,7 +60,7 @@ function PaymentForm({ next, prev }) {
           }
         }
       ).then((data)=> {
-        const status = data.data.data.status;
+        const status = data?.data?.data?.status;
         if (status=="failed") {
           handCancelPayment();
           setFailed(true)
@@ -84,9 +83,8 @@ function PaymentForm({ next, prev }) {
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-white backdrop-blur-sm bg-opacity-5 ">
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-5 rounded-lg">
             <DialogTitle className="text-black font-bold text-md">PAYING</DialogTitle>
-            <div className="flex flex-col justify-center items-center gap-5">
-              <p className="text-lg">{statusData.display_text? statusData.display_text:"Please complete the payment by inputing your PIN"}</p>
-              <ClipLoader className="w-4 h-4" />
+            <div className="flex flex-col justify-center items-center gap-5 min-w-96">
+              <p className="text-lg">{statusData.display_text? statusData.display_text:<ClipLoader className="w-4 h-4" />}</p>
             </div>
             <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handCancelPayment}>Cancel</button>
           </DialogPanel>

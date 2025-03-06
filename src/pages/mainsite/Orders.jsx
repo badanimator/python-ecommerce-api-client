@@ -7,6 +7,7 @@ import CardProfile from "../../components/CardProfile";
 import OrderCard from "../../components/OrderCard";
 import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
+import fallback from "../../helpers/fallbackData";
 
 const Orders = () => {
   const [page, setPage] = useState(1);
@@ -20,7 +21,7 @@ const Orders = () => {
         const res = await orderService.getAllOrders(page);
         return res.data;
       }catch(errors){
-        console.log(errors)
+        return fallback;
       }
       
     }

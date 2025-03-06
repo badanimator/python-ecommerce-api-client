@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Plus, Minus, Lock, Trash } from "react-feather";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
-import { ClipLoader, SyncLoader, FadeLoader } from "react-spinners";
+import { SyncLoader } from "react-spinners";
 
 function BasketProduct({ item }) {
   const { decrement, deleteItem, increment, cartData } = useCart();
@@ -11,13 +11,8 @@ function BasketProduct({ item }) {
   const [isIncreasing, setIsIncreasing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-
-
   return (
-    <div
-      className="product md:flex justify-between mb-6"
-      suppressHydrationWarning
-    >
+    <div className="product md:flex justify-between mb-6" suppressHydrationWarning>
       <Link to={"/details/" + item.product.slug}>
         <div className="image md:flex cursor-pointer">
           <motion.div
@@ -25,7 +20,7 @@ function BasketProduct({ item }) {
             animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}
           >
             <img
-              className="w-full md:w-32 h-32 object-contain rounded-xl border p-1"
+              className="w-full md:w-32 h-32 object-contain rounded-xl border p-1 overflow-hidden"
               src={item.product.thumbnail}
               alt={item.product.thumbnail}
             />

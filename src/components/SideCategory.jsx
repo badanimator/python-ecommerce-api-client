@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import Skeleton from "react-loading-skeleton";
 import productService from "../api/services/product.service";
 import { Plus, Minus, Check, Search } from "react-feather";
 import { useState, useEffect } from "react";
@@ -16,12 +15,8 @@ function SideCategory() {
     refetchOnWindowFocus:false,
     queryKey: ["categories"],
     queryFn: async ()=>{
-      try{
-        const res = await productService.getCategories()
-        return res.data;
-      }catch(errors){
-        // console.log(errors)
-      }
+      const res = await productService.getCategories()
+      return res.data;
     }
   })
 
@@ -55,7 +50,7 @@ function SideCategory() {
         <form className="border-t border-gray-200">
           <h3 className="sr-only text-black">Categories</h3>
 
-          {categories.data.items.map((cat, key)=>(
+          {categories.data?.items?.map((cat, key)=>(
             <div key={key} className="border-t border-gray-200 px-4 py-6">
               <h3 className="-mx-2 -my-3 flow-root">
                 <button onClick={()=> toggleCategory(key)} type="button" className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500" aria-controls="filter-section-mobile-0" aria-expanded="false">

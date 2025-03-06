@@ -135,7 +135,7 @@ const ProductDetails = () => {
         {isSuccess && (<>
           <div className="w-full bg-white rounded md:rounded-2xl shadow-lg md:py-8 md:px-10 md:flex overflow-hidden">
             {/* thumbnail */}
-            <div className="md:w-1/3">
+            <div className="md:w-1/3 overflow-hidden">
               <div className="cursor-pointer" onClick={() => setVisible(true)}>
                 <img
                   className="h-60 object-contain w-full rounded-t-sm md:rounded-2xl md:border p-2"

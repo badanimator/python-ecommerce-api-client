@@ -12,7 +12,7 @@ const Product = ({ item, ref }) => {
           transition={{ delay: 0.2 }}
         >
           <img
-            className="rounded-xl w-full h-48 bg-gray object-contain p-2 over"
+            className="rounded-xl w-full h-48 bg-gray object-contain p-2"
             src={item.thumbnail}
             alt={item.thumbnail}
             loading="lazy"

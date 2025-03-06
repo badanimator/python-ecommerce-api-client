@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import cartService from "../api/services/cart.service";
 import { useUser } from "./UserContext";
+import fallback from "../helpers/fallbackData";
 
 const CartContext = createContext();
 

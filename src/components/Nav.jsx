@@ -51,7 +51,7 @@ const Nav = () => {
           >
             <ShoppingBag className="w-6 m-auto h-6 text-black" />
             <div
-              className={` absolute text-xs font-light justify-center text-white text-center w-4 h-4 bg-black rounded-full bottom-0 right-0`}
+              className={`absolute text-xs font-light justify-center text-white text-center w-4 h-4 bg-black rounded-full bottom-0 right-0`}
             >
               {(cartData.isSuccess)?cartData.data.cart_quantity:0}
             </div>

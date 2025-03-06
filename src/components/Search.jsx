@@ -23,8 +23,7 @@ function Search() {
         const res = await productService.getUserProduct(1, searchStr);
         return res.data;
       }catch(errors){
-        console.log(errors)
-        return
+        return {}
       }
     }
   })

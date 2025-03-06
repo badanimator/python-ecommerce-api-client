@@ -15,14 +15,10 @@ const ProductsCard = ()=>{
   const productData = useInfiniteQuery({
     refetchOnWindowFocus:false,
     queryKey: ['products', filters],
-    getNextPageParam: ({ meta }) => (meta.pages === meta.page)? undefined: meta.next_num,
+    getNextPageParam: ({ meta }) => (meta?.pages === meta?.page)? undefined: meta.next_num,
     queryFn: async ({pageParam = 1}) => {
-      try{
-        const res = await productService.getUserProduct(pageParam, {...filters});
-        return res.data;
-      }catch(error){
-        return
-      }
+      const res = await productService.getUserProduct(pageParam, {...filters});
+      return res.data;
     },
   })
 
@@ -57,23 +53,7 @@ const ProductsCard = ()=>{
         </div>
       </div>
       <div className={`grid grid-cols-2 md:grid-cols-${grid} lg:grid-cols-${grid} gap-x-4 gap-y-6`}>
-        {/* no data */}
-        {productData.isSuccess && productData.data.pages[0].meta.total === 0 && (
-          <div className="col-span-full opacity-20">
-            <div className="flex flex-col justify-center item-center gap-4">
-              <img className="h-44" src="empty.svg" />
-              <p className="text-2xl text-center font-medium">No result found</p>
-            </div>
-          </div>
-        )}
-
-        {/* data */}
-        {(productData.isSuccess && productData.data.pages.length > 0) && (
-          productData.data.pages.map((page)=>page.items.map((item, index)=> <Product key={index} item={item}/>))
-        )}
-
-        {/* loading */}
-        {productData.isLoading && (
+        {productData.isLoading? (
           <>
             <CardSkeleton />
             <CardSkeleton />
@@ -84,6 +64,15 @@ const ProductsCard = ()=>{
             <CardSkeleton />
             <CardSkeleton />
           </>
+        ): productData.data === undefined || productData.data.pages[0].meta.total === 0? (
+          <div className="col-span-full opacity-20">
+            <div className="flex flex-col justify-center item-center gap-4">
+              <img className="h-44" src="empty.svg" />
+              <p className="text-2xl text-center font-medium">No result found</p>
+            </div>
+          </div>
+        ):(
+          productData.data.pages.map((page)=>page.items.map((item, index) => <Product key={index} item={item}/>))
         )}
 
         {/* pagination */}

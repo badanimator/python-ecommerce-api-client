@@ -36,7 +36,7 @@ function ShopCarousel() {
             className="rounded-2xl overflow-hidden shop shadow-lg"
           >
             {
-              (images.data.items.length > 0)?
+              (images?.data?.items?.length > 0)?
               (images.data.items.map((image)=> (
                 <div className="relative" key={image.id}>
                   <img
