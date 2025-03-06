@@ -23,6 +23,7 @@ function PaymentForm({ next, prev }) {
   
   const [pinCode, setPinCode] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [otpErr, setOtpErr] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [isSendingPinCode, setIsSendingPinCode] = useState(false);
   const [statusData, setStatusData] = useState({});
@@ -67,6 +68,8 @@ function PaymentForm({ next, prev }) {
     ).then(res => {
       setStatusData(res.data.data);
       setOtpSent(false);
+    }).catch((errors)=>{
+      setOtpErr(true);
     }).finally(()=>setIsSendingPinCode(false))
   }
 
@@ -118,9 +121,14 @@ function PaymentForm({ next, prev }) {
                     <p className="font-semibold w-full">{statusData.display_text}</p>
                     <input
                       onChange={(e)=> setPinCode(e.target.value)}
+                      onFocus={(e)=> {
+                        setOtpErr(false); 
+                        setPinCode("");
+                        e.target.value = "";
+                      }}
                       type="text"
                       placeholder="Pin Code*"
-                      className="my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm"
+                      className={`${otpErr && "outline outline-red-600"} my-2 border rounded-sm border-gray-300 w-full px-4 py-3 text-sm `}
                     />
                   </div>
                 ):statusData.display_text? <p className="font-semibold">{statusData.display_text}</p>:(
@@ -129,10 +137,10 @@ function PaymentForm({ next, prev }) {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <button className={`${otpSent? "col-span-1":"hidden"} bg-white text-black border border-gray-700 rounded-sm py-2 mt-3`} onClick={handleSendPinCode}>
-                {isSendingPinCode? <ClipLoader />: "Send Code"}
-              </button>
               <button className={`${otpSent? "col-span-1":"col-span-2"}  bg-black rounded-sm text-white py-2 mt-3`} onClick={handCancelPayment}>Cancel</button>
+              <button className={`${otpSent? "col-span-1":"hidden"} bg-white text-black border border-gray-700 rounded-sm py-2 mt-3`} onClick={handleSendPinCode}>
+                {isSendingPinCode? <ClipLoader size={18} />: "Send Code"}
+              </button>
             </div>
           </DialogPanel>
         </div>
