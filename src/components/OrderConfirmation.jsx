@@ -35,11 +35,9 @@ function OrderConfirmation() {
         <div className="flex flex-col place-items-center text-center text-cusblack">
           <X className="w-28 h-28 text-red-600" />
           <h1 className="my-2 text-2xl font font-semibold">
-            Insufficient balance
+            Faild
           </h1>
-          <p className="text-sm my-2 md:w-2/3 leading-relaxed">
-            {msg + ". Topup and try again."}
-          </p>
+          <p className="text-sm my-2 md:w-2/3 leading-relaxed">{msg}</p>
         </div>
       ):(
         <div className="flex flex-col place-items-center text-center text-cusblack">
