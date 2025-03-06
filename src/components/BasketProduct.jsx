@@ -12,7 +12,7 @@ function BasketProduct({ item }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   return (
-    <div className="product md:flex justify-between mb-6" suppressHydrationWarning>
+    <div className="product md:flex justify-between mb-6 hover:shadow-lg hover:rounded-sm hover:px-1" suppressHydrationWarning>
       <Link to={"/details/" + item.product.slug}>
         <div className="image md:flex cursor-pointer">
           <motion.div
@@ -20,7 +20,7 @@ function BasketProduct({ item }) {
             animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}
           >
             <img
-              className="w-full md:w-32 h-32 object-contain rounded-xl border p-1 overflow-hidden"
+              className="w-full md:w-32 h-32 object-contain rounded-xl p-1 overflow-hidden"
               src={item.product.thumbnail}
               alt={item.product.thumbnail}
             />

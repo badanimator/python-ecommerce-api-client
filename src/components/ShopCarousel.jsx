@@ -21,7 +21,11 @@ function ShopCarousel() {
 
   return (
     <>
-      {images.isLoading && <Skeleton className="h-24 md:h-64" />}
+      {images.isLoading && (
+        <div className="shadow-lg rounded-2xl overflow-hidden">
+          <Skeleton className="h-20 md:h-64" />
+        </div>
+      )}
       {images.isSuccess && (
         <div className="">
           <Carousel
@@ -33,7 +37,7 @@ function ShopCarousel() {
             swipeable={true}
             transitionTime={500}
             interval={4000}
-            className="rounded-2xl overflow-hidden shop shadow-lg"
+            className="rounded-2xl overflow-hidden shadow-lg"
           >
             {
               (images?.data?.items?.length > 0)?

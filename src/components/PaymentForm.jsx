@@ -1,6 +1,5 @@
 import { useState } from "react";     
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 import { useOrders } from "../context/OrderContext";
@@ -9,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 
-const PAYSTACK_BEARER_TOKEN = import.meta.env.VITE_PAYSTACK_BEARER_TOKEN || "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
+const PAYSTACK_BEARER_TOKEN = import.meta.env.VITE_PAYSTACK_BEARER_TOKEN || "sk_live_3bdc110e868870361db9d20d82c1807c4234fa9e"
 
 const logos = {
   mtn:"mtn_logo.png", 
@@ -18,12 +17,14 @@ const logos = {
 }
 
 function PaymentForm({ next, prev }) {
-  const [pinCode, setPinCode] = useState("");
-  const { setIsSuccess, setFailed, setMsg } = useOrders();
-  const [otpSent, setOtpSent] = useState(false);
-  const { cartData } = useCart();
   const { checkout } = useOrders();
+  const { cartData } = useCart();
+  const { setIsSuccess, setFailed, setMsg } = useOrders();
+  
+  const [pinCode, setPinCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
+  const [isSendingPinCode, setIsSendingPinCode] = useState(false);
   const [statusData, setStatusData] = useState({});
 
   const {register, handleSubmit, formState: { errors } } = useForm();
@@ -31,16 +32,17 @@ function PaymentForm({ next, prev }) {
   const onSubmit = async (data) => {
     setIsPaying(true);
     const { phone_number, payment_channel, email, address_line1, address_line2, city, region } = data
-    checkout(phone_number, payment_channel, email, address_line1, address_line2, city, region ).then(
-      (data)=>{
+    checkout(phone_number, payment_channel, email, address_line1, address_line2, city, region ).then((data)=>{
         const responseData = data?.data?.data;
+        (responseData.status==="send_otp") && setOtpSent(true);
         setStatusData(responseData);
         cartData.refetch();
       }
     ).catch((errors)=> {
-      const response = errors? errors?.response?.data?.data?.message: "Payment failed";
+      setMsg(errors.response.data? errors.response.data.data.message: "Payment failed")
       handCancelPayment();
-      toast.error(response);
+      setFailed(true)
+      next()
     })
   };
 
@@ -50,12 +52,22 @@ function PaymentForm({ next, prev }) {
   }
 
   const handleSendPinCode = () => {
+    setIsSendingPinCode(true)
     const {reference} = statusData;
-    axios.post("https://api.paystack.co/charge/submit_otp", {pinCode, reference}).then(res => {
+    axios.post("https://api.paystack.co/charge/submit_otp", 
+      {
+        otp: pinCode, 
+        reference
+      }, 
+      {
+        headers:{
+          Authorization:"Bearer " + PAYSTACK_BEARER_TOKEN
+        }
+      }
+    ).then(res => {
       setStatusData(res.data.data);
-    }).finally(()=>{
       setOtpSent(false);
-    })
+    }).finally(()=>setIsSendingPinCode(false))
   }
 
   useQuery({
@@ -72,23 +84,19 @@ function PaymentForm({ next, prev }) {
         }
       ).then((res)=> {
         const { status, message } = res.data.data || {status:"failed", message: "something went wrong"};
-        if (status==="failed" && message==="LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED") {
+        if (status==="failed") {
           handCancelPayment();
+          setMsg(
+            message==="LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED"?
+            "Please your balance is insufficient to complete this transaction": message 
+          )
           setFailed(true)
-          setMsg("Please your balance is insufficient to complete this transaction")
-          next()
-        }else if(status==="failed" || "abandoned"){
-          handCancelPayment();
-          setFailed(true)
-          setMsg(message? message:"You did not complete the transaction");
           next()
         }else if(status=="success"){
           handCancelPayment();
           setIsSuccess(true);
           setMsg(res.data.message);
           next();
-        }else if (status==="send_otp"){
-          setOtpSent(true);
         }
         response = res;
       })
@@ -104,7 +112,7 @@ function PaymentForm({ next, prev }) {
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-5 rounded-lg">
             <DialogTitle className="text-black font-bold text-md">PAYING</DialogTitle>
             <div className="flex flex-col justify-center items-center gap-5 min-w-52 md:min-w-96">
-              <p className="text-lg">
+              <div className="text-lg">
                 {otpSent? (
                   <div className="flex flex-col gap-y-5">
                     <p className="font-semibold w-full">{statusData.display_text}</p>
@@ -118,11 +126,14 @@ function PaymentForm({ next, prev }) {
                 ):statusData.display_text? <p className="font-semibold">{statusData.display_text}</p>:(
                 <ClipLoader className="w-4 h-4" />
                 )}
-            </p>
+              </div>
             </div>
-
-            {otpSent && <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handleSendPinCode}>Send Code</button>}
-            <button className="bg-black rounded-lg w-full text-white py-2 mt-3" onClick={handCancelPayment}>Cancel</button>
+            <div className="grid grid-cols-2 gap-4">
+              <button className={`${otpSent? "col-span-1":"hidden"} bg-white text-black border border-gray-700 rounded-sm py-2 mt-3`} onClick={handleSendPinCode}>
+                {isSendingPinCode? <ClipLoader />: "Send Code"}
+              </button>
+              <button className={`${otpSent? "col-span-1":"col-span-2"}  bg-black rounded-sm text-white py-2 mt-3`} onClick={handCancelPayment}>Cancel</button>
+            </div>
           </DialogPanel>
         </div>
       </Dialog>

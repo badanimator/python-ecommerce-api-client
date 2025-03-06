@@ -214,8 +214,8 @@ const ProductDetails = () => {
                 <div className="buttoncart flex mt-5 w-full">
                   <button type="submit"
                     disabled={isInCart(dataItem.id) || isAddingToCart}
-                    className={`w-4/5 md:w-3/5 ${isInCart(dataItem.id)?"bg-gray-500":"bg-black"} overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100`}
-                  >
+                    className={`w-4/5 md:w-3/5 ${isInCart(dataItem.id) || isAddingToCart?"bg-gray-500":"bg-black"} overflow-hidden py-4 text-white rounded-lg text-sm active:bg-gray-800 duration-100`}
+                  > 
                     <motion.span
                       initial={{ y: -100 }}
                       animate={{ y: 0 }}
