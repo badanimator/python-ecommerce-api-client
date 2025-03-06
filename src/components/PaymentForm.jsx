@@ -10,7 +10,6 @@ import { ClipLoader } from "react-spinners";
 import axios from "axios";
 
 const PAYSTACK_BEARER_TOKEN = import.meta.env.VITE_PAYSTACK_BEARER_TOKEN || "sk_test_407b643fc6e233020da2f7ff0629576274de6fc9"
-console.log("tOKEN", PAYSTACK_BEARER_TOKEN)
 
 const logos = {
   mtn:"mtn_logo.png", 
