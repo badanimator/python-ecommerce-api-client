@@ -75,12 +75,12 @@ function PaymentForm({ next, prev }) {
         if (status==="failed" && message==="LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED") {
           handCancelPayment();
           setFailed(true)
-          setMsg("Please your balance is insufficient to complete this transaction.")
+          setMsg("Please your balance is insufficient to complete this transaction")
           next()
-        }else if(status==="failed"){
+        }else if(status==="failed" || "abandoned"){
           handCancelPayment();
           setFailed(true)
-          setMsg(message);
+          setMsg(message? message:"You did not complete the transaction");
           next()
         }else if(status=="success"){
           handCancelPayment();
@@ -148,8 +148,8 @@ function PaymentForm({ next, prev }) {
           <div className="md:col-span-2">
             <select name="payment_channel" {...register("payment_channel", { required: true })} className="my-2 border rounded-sm border-gray-300 bg-white w-full px-4 py-3 text-sm">
               <option value="MTN">MTN</option>
-              <option value="TELECEL">TELECEL</option>
-              <option value="AIRTELTIGO">AIRTELTIGO</option>
+              <option value="Vodafone">TELECEL</option>
+              <option value="AirtelTigo">AIRTELTIGO</option>
             </select>
           </div>
 
