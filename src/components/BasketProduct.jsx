@@ -12,7 +12,7 @@ function BasketProduct({ item }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   return (
-    <div className="product md:flex justify-between mb-6 hover:shadow-lg hover:rounded-sm hover:px-1" suppressHydrationWarning>
+    <div className="product md:flex justify-between mb-6 border-b-2 border-b-white hover:border-b-gray-100" suppressHydrationWarning>
       <Link to={"/details/" + item.product.slug}>
         <div className="image md:flex cursor-pointer">
           <motion.div

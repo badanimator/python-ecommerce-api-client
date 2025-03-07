@@ -20,6 +20,7 @@ import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
 
 const ProductDetails = () => {
+  
   const { slug } = useParams();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
@@ -28,7 +29,7 @@ const ProductDetails = () => {
   const { addWishlistItem, isInWishlist, wishlistData } = useWishlist();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isAddingToWishlist, setIsAddingToWishlist] = useState(false);
-
+  
   // fetch data
   const {data: dataItem, isLoading, isSuccess} = useQuery({
     refetchOnWindowFocus:false,
@@ -39,6 +40,8 @@ const ProductDetails = () => {
         return data
       }catch(error){
         return navigate("/404", {replace: true,});
+      }finally{
+        window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
       }
     }
   })
@@ -182,7 +185,11 @@ const ProductDetails = () => {
               <h1 className="text-3xl text-cusblack font-medium my-3">
                 {dataItem.name}
               </h1>
-              <p className="my-3 font-semibold text-lg text-black">{dataItem.formatted_price}</p>
+              <div className="flex gap-2 items-center">
+                <strike className="text-pretty font-thin text-sm">{dataItem.formatted_price}</strike>
+                <p className="text-lg font-semibold">{dataItem.formatted_discounted_price}</p>
+                <span className="bg-black text-white p-1 rounded-md text-sm font-thin">-{ dataItem.formatted_discounted_percentage }</span>
+              </div>
               <p className="text-sm text-gray-400 pb-6">{dataItem.description}</p>
               
               <form onSubmit={handleSubmit(onSubmit)}>

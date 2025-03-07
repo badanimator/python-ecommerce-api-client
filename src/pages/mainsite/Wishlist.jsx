@@ -4,9 +4,15 @@ import CardSkeleton from "../../components/CardSkeleton";
 import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
 import { ShoppingBag } from "react-feather";
+import { useEffect } from "react";
 
 function Wishlist() {
   const { wishlistData } = useWishlist();
+  
+  useEffect(()=>{
+    window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
+  },[])
+  
 
   return (
     <MainLayout>

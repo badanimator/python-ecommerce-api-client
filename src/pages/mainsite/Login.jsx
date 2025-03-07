@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { SyncLoader } from "react-spinners";
 import { Home } from "react-feather";
+
+
 // components
 import { useUser } from "../../context/UserContext";
 import authService from "../../api/services/auth.service";
@@ -17,6 +19,10 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
   const { state } = useLocation();
+
+  useEffect(()=>{
+    window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
+  },[])
 
   const {
     register,

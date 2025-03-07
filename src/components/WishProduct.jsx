@@ -9,7 +9,7 @@ function WishProduct({ item }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const { deleteWishlistItem, wishlistData } = useWishlist();
   return (
-    <div className="mb-4 overflow-hidden hover:shadow-lg hover:px-1 hover:rounded-sm">
+    <div className="mb-4 overflow-hidden hover:shadow-md hover:rounded-lg">
       <motion.div
         initial={{ scale: 1.5, x: 100, y: -100, opacity: 0 }}
         animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}

@@ -10,9 +10,10 @@ import Nav from "../../components/Nav";
 import fallback from "../../helpers/fallbackData";
 
 const Orders = () => {
+  
   const [page, setPage] = useState(1);
   const {isLoggedIn} = useUser();
-
+  
   const orders = useQuery({
     enabled:isLoggedIn,
     queryKey:['get_orders'],
@@ -22,8 +23,9 @@ const Orders = () => {
         return res.data;
       }catch(errors){
         return fallback;
+      }finally{
+        window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
       }
-      
     }
   })
 

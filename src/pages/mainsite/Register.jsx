@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -11,6 +11,10 @@ import MainLayout from "../../layout/MainLayout";
 import Nav from "../../components/Nav";
 
 const Register = () => {
+  useEffect(()=>{
+    window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
+  },[])
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] =  useState(false);
   const [error, setError] = useState("");

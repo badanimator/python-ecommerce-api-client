@@ -10,6 +10,7 @@ import Nav from "../../components/Nav";
 
 
 const Checkout = () => {
+  window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
   const { checkout } = useOrders()
   const { userData } = useUser();
   const [isLoading, setIsLoading] = useState(false);

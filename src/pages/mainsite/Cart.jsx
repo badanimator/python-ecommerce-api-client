@@ -10,6 +10,8 @@ import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
+  window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
+  
   const {isLoggedIn} = useUser();
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);

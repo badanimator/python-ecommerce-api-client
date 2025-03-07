@@ -1,5 +1,5 @@
 import { Sliders, X } from "react-feather";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainLayout from "../../layout/MainLayout";
 import SideCategory from "../../components/SideCategory";
 import ShopCarousel from "../../components/ShopCarousel";
@@ -9,6 +9,10 @@ import Nav from "../../components/Nav";
 
 const ProductList = () => {
   const [open, setOpen] = useState(false);
+
+  useEffect(()=>{
+    window.scrollTo({ behavior: "smooth", top: 0 }); // scrool to top
+  },[])
 
   return (
     <MainLayout title={"Home page"}>
